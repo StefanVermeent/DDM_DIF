@@ -220,7 +220,7 @@ Prior to the MNLFA analyses, we will test for configural invariance across diffe
 
 #### MNLFA analyses
 
-We will fit all MNLFA models using the OpenMx R package [@boker_2011], adopting code from [@Kolbe_2024]. 
+We will fit all MNLFA models using the OpenMx R package [@boker_2011], adopting code from [@kolbe_2024]. 
 
 **Step 1. Assess full measurement invariance.** To start, we will conduct an omnibus test for full measurement invariance, comparing an unconstrained configural model with a constrained scalar model. 
 

@@ -2,7 +2,7 @@
 
 # Preregistration
 
-*Last updated on Monday, November 24, 2025 at 12:12 PM*
+*Last updated on Monday, November 24, 2025 at 01:03 PM*
 
 ## Overview
 
@@ -199,7 +199,7 @@ categories: (1) primary education, (2) Prevocational secondary
 education, (3) Senior years of senior general secondary
 education/pre-university secondary education, (4) secondary vocational
 education, (5) Higher vocational education, (6) University degree. We
-will treat education as a continuous variable.
+will treat education as a continuous variable (centered).
 
 **Ethnicity.** Measured as LISS background variable, with five
 categories: Dutch background; First generation foreign, Western
@@ -213,7 +213,7 @@ background, 11% with a Western migration background, and 15% with a
 non-Western migration background. Ethnicity will by dummy-coded with
 ‘Dutch background’ as reference category.
 
-**Age.** Measured as LISS background variable, in years.
+**Age.** Measured as LISS background variable, in years (centered).
 
 #### Cognitive measures
 
@@ -312,15 +312,15 @@ Go back to [Overview](#overview).
   Attention-shifting factor; (2) a unity EF model, in which all
   performance measures load on a single EF factor. We will compare these
   models in terms of the change in the Akaike Information Criterion
-  (AIC). Based on previous work
-  ([**vermeent_2025b?**](#ref-vermeent_2025b)), we expect the unity
-  model to provide the best fit.
+  (AIC). Based on previous work ([Vermeent, Schubert, and Frankenhuis
+  2025](#ref-vermeent_2025b)), we expect the unity model to provide the
+  best fit.
 
-- *DDM parameters:* From previous work
-  ([**vermeent_2025b?**](#ref-vermeent_2025b)), we know that all three
-  DDM parameters (drift rate, boundary separation, and non-decision
-  time) load on their own, single latent factor. Thus, we will estimate
-  a single latent factor for each parameter loading on all manifest
+- *DDM parameters:* From previous work ([Vermeent, Schubert, and
+  Frankenhuis 2025](#ref-vermeent_2025b)), we know that all three DDM
+  parameters (drift rate, boundary separation, and non-decision time)
+  load on their own, single latent factor. Thus, we will estimate a
+  single latent factor for each parameter loading on all manifest
   parameter estimates. To simplify the MNLFA procedure, we will start by
   constructing separate latent models for each parameter.
 
@@ -344,8 +344,8 @@ apply the same fit indices cut-offs as listed above.
 #### MNLFA analyses
 
 We will fit all MNLFA models using the OpenMx R package ([Boker et al.
-2011](#ref-boker_2011)), adopting code from
-([**Kolbe_2024?**](#ref-Kolbe_2024)).
+2011](#ref-boker_2011)), adopting code from ([Kolbe et al.
+2024](#ref-kolbe_2024)).
 
 **Step 1. Assess full measurement invariance.** To start, we will
 conduct an omnibus test for full measurement invariance, comparing an
@@ -582,6 +582,24 @@ Frankenhuis, Willem E., Ethan S. Young, and Bruce J. Ellis. 2020. “The
 Hidden Talents Approach: Theoretical and Methodological Challenges.”
 *Trends in Cognitive Sciences* 24 (7): 569–81.
 <https://doi.org/10.1016/j.tics.2020.03.007>.
+
+</div>
+
+<div id="ref-kolbe_2024" class="csl-entry">
+
+Kolbe, Laura, Dylan Molenaar, Suzanne Jak, and Terrence D. Jorgensen.
+2024. “Assessing Measurement Invariance with Moderated Nonlinear Factor
+Analysis Using the R Package OpenMx.” *Psychological Methods* 29 (2):
+388–406. <https://doi.org/10.1037/met0000501>.
+
+</div>
+
+<div id="ref-vermeent_2025b" class="csl-entry">
+
+Vermeent, S., A.-L. Schubert, and W. E. Frankenhuis. 2025. “Adversity Is
+Associated with Lower General Processing Rather Than Executive
+Functioning.” *Journal of Experimental Psychology: General* 154 (11):
+3010–28. https://doi.org/<https://doi.org/10.1037/xge0001812>.
 
 </div>
 
