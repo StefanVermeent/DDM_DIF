@@ -2,7 +2,7 @@
 
 # Preregistration
 
-*Last updated on Monday, November 24, 2025 at 11:20 AM*
+*Last updated on Monday, November 24, 2025 at 12:12 PM*
 
 ## Overview
 
@@ -27,7 +27,6 @@ can jump to following the links below:
 - [Part 4 - Knowledge of Data](#part-4---knowledge-of-data)
 - [Part 5 - Analyses](#part-5---analyses)
 - [Part 6 - Statement of Integrity](#part-6---statement-of-integrity)
-- \[Appendix\]
 
 ## Part 1 - Study Information
 
@@ -89,25 +88,36 @@ Go back to [Overview](#overview).
 
 ### Q5: Dataset
 
-The LISS panel is a representative probability sample of roughly 5,000
-Dutch households (~7,500 individuals) drawn from the population register
-by Statistics Netherlands on an invite-only basis ([Scherpenzeel
-2011](#ref-scherpenzeel_2011)). Households without a computer or
-internet connection are provided with these facilities by LISS. Each
-year, participants complete the same core battery of questionnaires
-about—among other topics—their financial situation in the past year. In
-addition, participants can complete additional online questionnaires
-every month, with variable content.
+For more information on the LISS panel, see <https://lissdata.nl> and
+<https://website.lisspanel.nl> (Dutch only).
 
-The current study integrates three data sources.
+We integrate data from the following LISS studies:
 
-Cognitive measures were collected in a study designed by the first
-author, which was fielded between July-August 2025. Participants also
-reported on their childhood adversity exposure in this study, except for
-those participants who already responded to these items in one of two
-previous data collections (see [Q17: Relevant
-Publications](#q17-relevant-publications)). For these participants, we
-used their reports from these previous studies.
+1.  <DOI> (fielded June 2024). Participants in this study completed all
+    six cognitive tasks and the childhood adversity measures.
+2.  <DOI> (fielded July 2025). Participants in this study also completed
+    the cognitive tasks and adversity measures. We will select
+    participants from this study that *did not* participate in the study
+    under (1).
+3.  <DOI> (fielded October 2023). Some participants in studies (1)
+    and (2) already reported their level of childhood adversity in this
+    study from 2023 (involving other cognitive tasks), and did not do so
+    again in study (1) or (2). For these participants, we take their
+    data on childhood adversity exposure from this study and merge it
+    with their later cognitive data.
+
+Demographic information (age, ethnicity, education) is listed in LISS
+background variables <https://doi.org/10.57990/qn3k-as78>, which is a
+collection of basic information that panel members can update as
+necessary each time that they take part in a LISS study. The
+dempographic variables used in this study are automatically appended to
+the data of studies (1-3) by LISS.
+
+**Final sample**: Some people who participated in the cognitive studies
+(1) and (2) are from the same household, which violates the assumption
+of independence. We will randomly sample one participant per household
+and exclude the other members of the household. This should yield a
+sample size (prior to further exclusions) of N = 1100-1200.
 
 ### Q6: Public Availability
 
@@ -572,15 +582,6 @@ Frankenhuis, Willem E., Ethan S. Young, and Bruce J. Ellis. 2020. “The
 Hidden Talents Approach: Theoretical and Methodological Challenges.”
 *Trends in Cognitive Sciences* 24 (7): 569–81.
 <https://doi.org/10.1016/j.tics.2020.03.007>.
-
-</div>
-
-<div id="ref-scherpenzeel_2011" class="csl-entry">
-
-Scherpenzeel, Annette. 2011. “Data Collection in a Probability-Based
-Internet Panel: How the LISS Panel Was Built and How It Can Be Used.”
-*Bulletin of Sociological Methodology* 109: 56–61.
-<https://doi.org/10.1177/0759106310387713>.
 
 </div>
 
