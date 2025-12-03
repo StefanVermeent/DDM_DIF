@@ -2,7 +2,7 @@
 
 # Preregistration
 
-*Last updated on Wednesday, December 03, 2025 at 09:27 AM*
+*Last updated on Wednesday, December 03, 2025 at 09:32 AM*
 
 ## Overview
 
@@ -93,18 +93,20 @@ For more information on the LISS panel, see <https://lissdata.nl> and
 
 We integrate data from the following LISS studies:
 
-1.  <DOI> (fielded June 2024). Participants in this study completed all
-    six cognitive tasks and the childhood adversity measures.
-2.  <DOI> (fielded July 2025). Participants in this study also completed
-    the cognitive tasks and adversity measures. We will select
-    participants from this study that *did not* participate in the study
-    under (1).
-3.  <DOI> (fielded October 2023). Some participants in studies (1)
-    and (2) already reported their level of childhood adversity in this
-    study from 2023 (involving other cognitive tasks), and did not do so
-    again in study (1) or (2). For these participants, we take their
-    data on childhood adversity exposure from this study and merge it
-    with their later cognitive data.
+1.  <https://doi.org/10.57990/yrh7-j521> (fielded June 2024).
+    Participants in this study completed all six cognitive tasks and the
+    childhood adversity measures.
+2.  <https://doi.org/10.57990/d9h4-jr36> (fielded July 2025).
+    Participants in this study also completed the cognitive tasks and
+    adversity measures. We will select participants from this study that
+    *did not* participate in the study under (1).
+3.  <https://doi.org/10.57990/n52r-kq87> (fielded October 2023). Some
+    participants in studies (1) and (2) already reported their level of
+    childhood adversity in this study from 2023 (involving other
+    cognitive tasks), and did not do so again in study (1) or (2). For
+    these participants, we take their data on childhood adversity
+    exposure from this study and merge it with their later cognitive
+    data.
 
 Demographic information (age, ethnicity, education) is listed in LISS
 background variables <https://doi.org/10.57990/qn3k-as78>, which is a
@@ -122,12 +124,13 @@ sample size (prior to further exclusions) of N = 1100-1200.
 ### Q6: Public Availability
 
 All LISS data used in this project will be made openly available in the
-LISS data archive (note that at the time of submitting this
-preregistration, LISS was still processing these data for publication in
-the archive). Researchers who want to access the data are required to
-sign a statement confirming that information about individual persons,
-households, etc., will not be released to others (go to
-<https://statements.centerdata.nl> for more information).
+LISS data archive at the links listed under Q5 (note that at the time of
+submitting this preregistration, LISS was still processing the 2023 and
+2024 data for publication in the archive). Researchers who want to
+access the data are required to sign a statement confirming that
+information about individual persons, households, etc., will not be
+released to others (go to <https://statements.centerdata.nl> for more
+information).
 
 ### Q7: Data Access
 
@@ -218,15 +221,12 @@ non-Western migration background. Ethnicity will by dummy-coded with
 #### Cognitive measures
 
 **Raw performance.** For the Flanker and Simon tasks, we will compute
-difference scores by subtracting the average log-transformed response
-time on correct incongruent trials from the average log-transformed
-response time on correct congruent trials. For the Color-shape,
-Global-local, and Animacy-size tasks, we will compute switch costs by
-subtracting the average log-transformed response time on switch trials
-from the average log-transformed response time on repeat trials (after
+difference scores by subtracting the average response time on correct
+incongruent trials from the average response time on correct congruent
+trials. For the Color-shape, Global-local, and Animacy-size tasks, we
+will compute switch costs by subtracting the average response time on
+switch trials from the average response time on repeat trials (after
 removing incorrect trials and trials following an incorrect response).
-For the Posner task, we will compute the average log-transformed
-response time across all correct trials.
 
 **DDM parameters.** The DDM will be fit separately to each task in each
 wave. We will use individual-level hierarchical Bayesian estimation
