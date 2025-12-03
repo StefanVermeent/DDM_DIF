@@ -2,7 +2,7 @@
 
 # Preregistration
 
-*Last updated on Monday, November 24, 2025 at 01:03 PM*
+*Last updated on Wednesday, December 03, 2025 at 09:27 AM*
 
 ## Overview
 
@@ -339,7 +339,7 @@ groups to allow for configural invariance testing. For childhood threat
 and deprivation, we will use a median split. For age, we will create a
 group of participants \< 45 years and a group \> 45 years, based on work
 showing that EF performance starts to decline around that age. We will
-apply the same fit indices cut-offs as listed above.
+apply the same fit indice cut-offs as listed above.
 
 #### MNLFA analyses
 

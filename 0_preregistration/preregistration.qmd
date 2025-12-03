@@ -216,7 +216,7 @@ Selected models should have at least acceptable fit, assessed as a root-mean-squ
 
 #### Establish configural invariance
 
-Prior to the MNLFA analyses, we will test for configural invariance across different levels of each moderator. We will do so using the 'group' input in the *lavaan::cfa()* function. For the categorical variables (ethnicity and sex), we will assess configural invariance in each group. For the continuous variables, we will create categorical groups to allow for configural invariance testing. For childhood threat and deprivation, we will use a median split. For age, we will create a group of participants < 45 years and a group > 45 years, based on work showing that EF performance starts to decline around that age. We will apply the same fit indices cut-offs as listed above.
+Prior to the MNLFA analyses, we will test for configural invariance across different levels of each moderator. We will do so using the 'group' input in the *lavaan::cfa()* function. For the categorical variables (ethnicity and sex), we will assess configural invariance in each group. For the continuous variables, we will create categorical groups to allow for configural invariance testing. For childhood threat and deprivation, we will use a median split. For age, we will create a group of participants < 45 years and a group > 45 years, based on work showing that EF performance starts to decline around that age. We will apply the same fit indice cut-offs as listed above.
 
 #### MNLFA analyses
 
