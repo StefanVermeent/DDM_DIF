@@ -2,3 +2,11 @@
 .Rhistory
 .RData
 .Ruserdata
+
+
+groundhog/
+
+# Do not include LISS data
+
+1_data/1_inputData/*
+1_data/2_IntermediateData/*
