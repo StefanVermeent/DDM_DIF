@@ -30,6 +30,8 @@ set_flextable_defaults(
 
 *Last updated `r format(Sys.time(), "on %A, %B %d, %Y at %I:%M %p")`*
 
+This preregistration was officially timestamped on the Open Science Framework (<https://osf.io/h35g9/>).
+
 ## Overview
 
 The goal of this study is to investigate and compare sources of differential item functioning (DIF) in raw performance measures of executive functioning tasks and computational model parameters of those same tasks.
@@ -94,14 +96,14 @@ For more information on the LISS panel, see <https://lissdata.nl> and <https://w
 We integrate data from the following LISS studies:
 
 1. <https://doi.org/10.57990/yrh7-j521> (fielded June 2024). Participants in this study completed all six cognitive tasks and the childhood adversity measures.
-2. <https://doi.org/10.57990/d9h4-jr36> (fielded July 2025). Participants in this study also completed the cognitive tasks and adversity measures. We will select participants from this study that *did not* participate in the study under (1). 
+2. <https://doi.org/10.57990/d9h4-jr36> (fielded July 2025). Participants in this study also completed the cognitive tasks and adversity measures. We will select participants from this study that *did not* participate in the study under (1). Thus, all participants will have data on one time point, either from the wave 1 or wave 2 dataset.
 3. <https://doi.org/10.57990/n52r-kq87> (fielded October 2023). Some participants in studies (1) and (2) already reported their level of childhood adversity in this study from 2023 (involving other cognitive tasks), and did not do so again in study (1) or (2). For these participants, we take their data on childhood adversity exposure from this study and merge it with their later cognitive data.
 
-Demographic information (age, education, urbanicity) is listed in LISS background variables <https://doi.org/10.57990/qn3k-as78>, which is a collection of basic information that panel members can update as necessary each time that they take part in a LISS study. The dempographic variables used in this study are automatically appended to the data of studies (1-3) by LISS.
+Demographic information (age, education, urbanicity) is collected in the monthly LISS background section <https://doi.org/10.57990/qn3k-as78>, which is a collection of basic information that panel members can update as necessary each time that they take part in a LISS study. The demographic variables used in this study are automatically appended to the data of studies (1-3) by LISS.
 
 **Final sample**: Some people who participated in the cognitive studies (1) and (2) are from the same household, which violates the assumption of independence. 
 We will randomly sample one participant per household and exclude the other members of the household. 
-This should yield a sample size (prior to further exclusions) of N = 1100-1200.
+This should yield a sample size (prior to further exclusions) of N = 1000-1200.
 
 ### Q6: Public Availability
 
@@ -111,8 +113,8 @@ Researchers who want to access the data are required to sign a statement confirm
 ### Q7: Data Access
 
 Data will become available in the LISS data archive at <https://www.dataarchive.lissdata.nl/study-units/view/1>.
-At the time of submitting this preregistration, LISS was still processing these data for publication in the archive.
-We will share the DOIs of the data sets on the repository's GitHub page after they have been published in the archive.
+At the time of submitting this preregistration, the wave 1 data are openly available (see DOI under Q5), but the other two studies are still being processed by LISS.
+
 
 ### Q8: Date of Download
 
@@ -128,7 +130,7 @@ For this project, we select participants who participated in both waves.
 
 ### Q10: Codebooks
 
-Codebooks for the newly collected data will become available later at <https://www.dataarchive.lissdata.nl/study-units/view> and <https://github.com/StefanVermeent/liss_ef_2025>.
+Codebooks for the newly collected data will become available later at <https://www.dataarchive.lissdata.nl/study-units/view> and <https://github.com/StefanVermeent/ddm_dif>.
 
 Go back to [Overview].
 
@@ -154,19 +156,27 @@ To measure potential DIF resulting from demographic factors, we will include thr
 
 **Education.** Measured as a LISS background variable, with six categories: (1) primary education, (2) Prevocational secondary education, (3) Senior years of senior general secondary education/pre-university secondary education, (4) secondary vocational education,  (5) Higher vocational education, (6) University degree. We will treat education as a continuous variable (centered).
 
-**Urbanicity.** Measured as LISS background variable, with five categories: (1) Extremely urban; (2) Very urban; (3) Moderately urban; (4) Slightly urban; and (5) Not urban. We will treat urbanicity as a continuous variable (centered).
+**Urban character of place of residence.** Measured as LISS background variable, based on the surrounding address density per km^2^. 
+One of five categories: (1) Extremely urban (2,500 or more); (2) Very urban (1,500 to 2,500); (3) Moderately urban (1,000 to 1,500); (4) Slightly urban (500 to 1,000); and (5) Not urban (less than 500). 
+We will treat urbanicity as a continuous variable (centered).
 
 **Age.** Measured as LISS background variable, in years (centered).
 
 #### Cognitive measures
 
-**Raw performance.** For the Flanker and Simon tasks, we will compute difference scores by subtracting the average response time on correct incongruent trials from the average response time on correct congruent trials. For the Color-shape, Global-local, and Animacy-size tasks, we will compute switch costs by subtracting the average response time on switch trials from the average response time on repeat trials (after removing incorrect trials and trials following an incorrect response).
+**Raw performance.** For the Flanker and Simon tasks, we will compute difference scores by subtracting the average response time on correct incongruent trials from the average response time on correct congruent trials. 
+For the Color-shape, Global-local, and Animacy-size tasks, we will compute switch costs by subtracting the average response time on switch trials from the average response time on repeat trials (after removing incorrect trials and trials following an incorrect response).
 
-**DDM parameters.** The DDM will be fit separately to each task in each wave. We will use individual-level hierarchical Bayesian estimation methods, with default broad and uninformative priors. For the inhibition and attention-shifting tasks, drift rate, boundary separation, and non-decision time will be allowed to vary across conditions. For the Posner task, we will estimate a single drift rate, boundary separation, and non-decision time across all trials. We will assess model convergence visually (through trace plots) and by computing the Gelman-Rubin statistic, which should be below 1.1. In addition, we will also use a simulation-based approach to compare model-implied response times and accuracy with empirical response times and accuracy. 
+**DDM parameters.** The DDM will be fit separately to each task in each wave. We will use individual-level hierarchical Bayesian estimation methods, with default broad and uninformative priors. 
+For the inhibition and attention-shifting tasks, drift rate, boundary separation, and non-decision time will be allowed to vary across conditions. 
+For the Posner task, we will estimate a single drift rate, boundary separation, and non-decision time across all trials. 
+We will assess model convergence visually (through trace plots) and by computing the Gelman-Rubin statistic, which should be below 1.1. 
+In addition, we will also use a simulation-based approach to compare model-implied response times and accuracy with empirical response times and accuracy. 
 
 ### Q14: Missing data
 
-We will use Full Information Maximum Likelihood (FIML) to handle missing data.
+We will use Full Information Maximum Likelihood (FIML) to handle missing data in the SEM indicator variables.
+We will impute missing data in the MNLFA moderators using predictive mean matching.
 
 ### Q15: Outliers
 
@@ -192,13 +202,14 @@ Go back to [Overview].
 
 ### Q18: Prior Knowledge
 
-In the first previous study (Vermeent, Schubert, Dejoseph, et al., 2025; see Q17) the participant sample partly overlapped with the current sample. 
-However, the main independent variables (recent rather than childhood exposures to adversity) and dependent variables (working memory) were different from those included in the current study.
+In the first previous study (Vermeent, Schubert, Dejoseph, et al., 2025; see Q17) we used data from the study that was fielded in 2023 (wave 1 and wave 2---which are the focus of the current study---were not yet collected at the time the study was completed). 
+The main independent variables (recent rather than childhood exposures to adversity) and dependent variables (performance on working memory tasks) were different from those included in the current study.
 
 In the second previous study (Vermeent, Schubert, & Frankenhuis, 2025; see Q17), we used wave 1 included in the current study to investigate how recent and childhood adversity are associated with task-general and task-specific DDM parameters.
 From this study, we know that all three DDM parameters form their own coherent latent factor across all tasks and task conditions. 
 We also know that childhood adversity is negatively associated with task-general drift rate as well as task-specific residual drift rates, and that childhood adversity was not associated with other DDM parameters.
-We did not investigate measurement invariance in this study, and completed the study before collecting the data of wave 2. 
+We did not investigate measurement invariance in this study, nor did we analyze raw performance measures. 
+We completed the study before collecting the data of wave 2. 
 
 Go back to [Overview].
 
@@ -208,15 +219,22 @@ Go back to [Overview].
 
 #### Establish factor structure
 
--   **Raw performance:** We will compare two models: (1) a diversity EF model, in which we separately estimate an Inhibition factor and an Attention-shifting factor; (2) a unity EF model, in which all performance measures load on a single EF factor. We will compare these models in terms of the change in the Akaike Information Criterion (AIC). Based on previous work [@vermeent_2025b], we expect the unity model to provide the best fit.
+-   **Raw performance:** We will compare two models: (1) a diversity EF model, in which we separately estimate an Inhibition factor and an Attention-shifting factor; (2) a unity EF model, in which all performance measures load on a single EF factor. We will compare these models in terms of the change in the Akaike Information Criterion (AIC). 
+Based on previous work [@vermeent_2025b], we expect the unity model to provide the best fit.
 
--   *DDM parameters:* From previous work [@vermeent_2025b], we know that all three DDM parameters (drift rate, boundary separation, and non-decision time) load on their own, single latent factor. Thus, we will estimate a single latent factor for each parameter loading on all manifest parameter estimates. To simplify the MNLFA procedure, we will start by constructing separate latent models for each parameter.
+-   *DDM parameters:* From previous work [@vermeent_2025b], we know that all three DDM parameters (drift rate, boundary separation, and non-decision time) load on their own, single latent factor.
+Thus, we will estimate a single latent factor for each parameter loading on all manifest parameter estimates. To simplify the MNLFA procedure, we will start by constructing separate latent models for each parameter.
 
 Selected models should have at least acceptable fit, assessed as a root-mean-square error of approximation (RMSEA) < .08, and a comparative fit index (CFI) > .90.
 
 #### Establish configural invariance
 
-Prior to the MNLFA analyses, we will test for configural invariance across different levels of each moderator. We will do so using the 'group' input in the *lavaan::cfa()* function. For education and urbanicity, we will assess configural invariance in each group. For the other variables, we will create categorical groups to allow for configural invariance testing. For childhood threat and deprivation, we will use a median split. For age, we will create a group of participants < 45 years and a group > 45 years, based on work showing that EF performance starts to decline around that age. We will apply the same fit indice cut-offs as listed above.
+Prior to the MNLFA analyses, we will test for configural invariance across different levels of each moderator. 
+We will do so using the 'group' input in the *lavaan::cfa()* function. For education and urbanicity, we will assess configural invariance in each group. 
+For the other variables, we will create categorical groups to allow for configural invariance testing. 
+For childhood threat and deprivation, we will use a median split. 
+For age, we will create a group of participants < 45 years and a group > 45 years, based on work showing that EF performance starts to decline around that age. 
+We will apply the same fit indice cut-offs as listed above.
 
 #### MNLFA analyses
 
@@ -224,9 +242,12 @@ We will fit all MNLFA models using the OpenMx R package [@boker_2011], adopting 
 
 **Step 1. Assess full measurement invariance.** To start, we will conduct an omnibus test for full measurement invariance, comparing an unconstrained configural model with a constrained scalar model. 
 
-   -   **Configural model:** freely estimate effects of all moderators on item intercepts and factor loadings;  constrain mean impact to zero (for identifiability). Note that in all other models, the mean impact of moderators on latent factors will be freely estimated.
-   -   **Scalar model:** Constrain effects of all moderators on item intercepts and factor loadings to zero; freely estimate mean impact. the effects of all moderators on item intercepts and factor loadings are constrained to zero, while freely estimating impact paths. 
-   -   **Test:** Model comparison through likelihood ratio test (`OpenMx::mxCompare(fitConfig, fitScalar)`. If the scalar model provides a significantly worse fit to the data than the configural model (at $\alpha$ = .05), we will conclude that there is evidence for DIF and will proceed to the next steps.
+   -   **Configural model:** freely estimate effects of all moderators on item intercepts and factor loadings;  constrain mean impact to zero (for identifiability). 
+   Note that in all other models, the mean impact of moderators on latent factors will be freely estimated.
+   -   **Scalar model:** Constrain effects of all moderators on item intercepts and factor loadings to zero; freely estimate mean impact. 
+   the effects of all moderators on item intercepts and factor loadings are constrained to zero, while freely estimating impact paths. 
+   -   **Test:** Model comparison through likelihood ratio test (`OpenMx::mxCompare(fitConfig, fitScalar)`. 
+   If the scalar model provides a significantly worse fit to the data than the configural model (at $\alpha$ = .05), we will conclude that there is evidence for DIF and will proceed to the next steps.
 
 **Step 2. Select anchor indicators.** Next, we will select anchor indicators, which will serve as (relatively) DIF-free reference points to ensure the stability of the measurement model.
 
@@ -242,9 +263,14 @@ We will fit all MNLFA models using the OpenMx R package [@boker_2011], adopting 
 
 **Step 4. Fit final  models.** 
 
-   -   **Final DIF selection raw performance model:** Fit a single model that simultaneously estimates the significant DIF paths from the previous step. We will apply a Benjamini Hochberg correction to the p-values of these moderation effects, and only retain the DIF paths with an adjusted p-value below .05.
-   -   **Final DIF selection DDM model(s):** First, we will attempt to fit a model that combines the unidimensional factor models (for each DDM parameter) into a single model. Thus, while the respective factor structure for each DDM parameter will be identical to previous steps, they will be combined in a single model, with freely estimated covariances between the latent factors). This model would account for typical covariances between parameters, which could affect DIF. However, if such a combined model does not converge, we will fit final models for the separate DDM parameters (identical to previous steps).
-   -   **Final models:** For both raw performance and DDM models, we will refit the final models including only the DIF paths that were found to be significant at an adjusted alpha-level of .05. These final models will be used for answering our hypotheses.
+   -   **Final DIF selection raw performance model:** Fit a single model that simultaneously estimates the significant DIF paths from the previous step. 
+   We will apply a Benjamini Hochberg correction to the p-values of these moderation effects, and only retain the DIF paths with an adjusted p-value below .05.
+   -   **Final DIF selection DDM model(s):** First, we will attempt to fit a model that combines the unidimensional factor models (for each DDM parameter) into a single model. 
+   Thus, while the respective factor structure for each DDM parameter will be identical to previous steps, they will be combined in a single model, with freely estimated covariances between the latent factors). 
+   This model would account for typical covariances between parameters, which could affect DIF. 
+   However, if such a combined model does not converge, we will fit final models for the separate DDM parameters (identical to previous steps).
+   -   **Final models:** For both raw performance and DDM models, we will refit the final models including only the DIF paths that were found to be significant at an adjusted alpha-level of .05.
+   These final models will be used for answering our hypotheses.
 
 ### Q20: Predicted effect sizes
 
@@ -253,11 +279,14 @@ Because multiple factor loadings/intercepts can show DIF, the combined effect of
 
 ### Q21: Statistical Power
 
-Precise sample size requirements for MNLFA currently do not exist. However, some initial evidence shows that DIF estimation stabilizes around N = 200-500. Given that our factor models are relatively simple, we expect our sample size to be sufficiently large to detect DIF.  
+Precise sample size requirements for MNLFA currently do not exist. 
+However, some initial evidence shows that DIF estimation stabilizes around N = 200-500. 
+Given that our factor models are relatively simple, we expect our sample size to be sufficiently large to detect DIF.  
 
 ### Q22: Inferential Criteria
 
-Here, we specify how (non-)support for each hypothesis will be determined. A prerequisite of support for all hypotheses is that there is evidence of DIF in at least the raw performance model, which holds if the scalar model provides a significantly worse fit to the data than the configural model.
+Here, we specify how (non-)support for each hypothesis will be determined. 
+A prerequisite of support for all hypotheses is that there is evidence of DIF in at least the raw performance model, which holds if the scalar model provides a significantly worse fit to the data than the configural model.
 
 *H1. DIF will be more prevalent and severe in measures of raw performance than in the drift rate parameter, reflecting greater susceptibility of traditional composites to EF-irrelevant influences tied to demographic background and adversity exposure.*
 
@@ -271,7 +300,7 @@ Here, we specify how (non-)support for each hypothesis will be determined. A pre
 
 *H3. Adjusting for DIF will attenuate observed group differences in latent EF factor means, indicating that some disparities reflect measurement non-invariance rather than true ability differences.*
 
--   **Full support**: Estimates of the impact of demographic and psychosocial moderators on latent factor means are smaller in the final model (which accounts for significant DIF) compared to the scalar model (which constrains all DIF paths to zero), and their 95% confidence intervals do not overlap between models.
+-   **Full support**: Estimates of the impact of demographic and adversity moderators on latent factor means are smaller in the final model (which accounts for significant DIF) compared to the scalar model (which constrains all DIF paths to zero), and their 95% confidence intervals do not overlap between models.
 -   **(partial) Non-support**: The impact estimates on latent means are not significantly smaller in the final model compared to the scalar models (i.e., their 95% confidence intervals overlap or the estimated impact is higher in the final model).
 
 *H4. We expect all demographic factors to be associated with at least some DIF in both factor loadings and item intercepts. Our investigation of childhood adversity is more exploratory due to a lack of studies investigating DIF related to adversity exposure*
@@ -290,7 +319,10 @@ If that does not solve the issue, we will investigate which parameter(s) are cau
 *Basic factor structure.* Non-convergence in the initial SEM models is also possible but unlikely, for the same reason.
 In the case of non-convergence, we will inspect the model to see which indicator(s) are causing non-convergence (e.g., by inspecting Heywood cases and modification indices), and will re-specify the model accordingly. 
 
-*MNLFA models.* Non-convergence poses a relatively bigger risk in the MNLFA analyses given the large number of parameters to be estimated. If MNLFA models including all preregistered moderators fail to converge, we will start with omnibus tests for DIF for each moderator separately. We will then drop the moderator that shows the smallest decrement in model fit, and reassess convergence when including all remaining moderators. If necessary, we will repeat these steps until the MNLFA models converge.
+*MNLFA models.* Non-convergence poses a relatively bigger risk in the MNLFA analyses given the large number of parameters to be estimated. 
+If MNLFA models including all preregistered moderators fail to converge, we will start with omnibus tests for DIF for each moderator separately. 
+We will then drop the moderator that shows the smallest decrement in model fit, and reassess convergence when including all remaining moderators. 
+If necessary, we will repeat these steps until the MNLFA models converge.
 
 ### Q24: Reliability and Robustness Testing
 
@@ -298,7 +330,9 @@ See [Q19: Hypotheses -\> Statistical Tests] for DDM model fit assessments.
 
 ### Q25: Exploratory Analyses
 
-We do not preregister any exploratory analyses.
+The mean impact analyses combine demographic and adversity measures in the same model. 
+We will interpret these effects as conditional effects rather than direct (causal) estimates. 
+As a sensitivity analysis, we will refit the final models including (1) only the impact paths of demographic variables, and (2) only the impact paths of adversity variables, and compare the effect sizes with those in the full model.
 
 Go back to [Overview].
 

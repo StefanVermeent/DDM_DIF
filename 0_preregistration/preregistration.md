@@ -2,7 +2,10 @@
 
 # Preregistration
 
-*Last updated on Wednesday, December 03, 2025 at 09:32 AM*
+*Last updated on Monday, December 15, 2025 at 01:28 PM*
+
+This preregistration was officially timestamped on the Open Science
+Framework (<https://osf.io/h35g9/>).
 
 ## Overview
 
@@ -99,7 +102,9 @@ We integrate data from the following LISS studies:
 2.  <https://doi.org/10.57990/d9h4-jr36> (fielded July 2025).
     Participants in this study also completed the cognitive tasks and
     adversity measures. We will select participants from this study that
-    *did not* participate in the study under (1).
+    *did not* participate in the study under (1). Thus, all participants
+    will have data on one time point, either from the wave 1 or wave 2
+    dataset.
 3.  <https://doi.org/10.57990/n52r-kq87> (fielded October 2023). Some
     participants in studies (1) and (2) already reported their level of
     childhood adversity in this study from 2023 (involving other
@@ -108,18 +113,18 @@ We integrate data from the following LISS studies:
     exposure from this study and merge it with their later cognitive
     data.
 
-Demographic information (age, ethnicity, education) is listed in LISS
-background variables <https://doi.org/10.57990/qn3k-as78>, which is a
-collection of basic information that panel members can update as
-necessary each time that they take part in a LISS study. The
-dempographic variables used in this study are automatically appended to
+Demographic information (age, education, urbanicity) is collected in the
+monthly LISS background section <https://doi.org/10.57990/qn3k-as78>,
+which is a collection of basic information that panel members can update
+as necessary each time that they take part in a LISS study. The
+demographic variables used in this study are automatically appended to
 the data of studies (1-3) by LISS.
 
 **Final sample**: Some people who participated in the cognitive studies
 (1) and (2) are from the same household, which violates the assumption
 of independence. We will randomly sample one participant per household
 and exclude the other members of the household. This should yield a
-sample size (prior to further exclusions) of N = 1100-1200.
+sample size (prior to further exclusions) of N = 1000-1200.
 
 ### Q6: Public Availability
 
@@ -136,10 +141,9 @@ information).
 
 Data will become available in the LISS data archive at
 <https://www.dataarchive.lissdata.nl/study-units/view/1>. At the time of
-submitting this preregistration, LISS was still processing these data
-for publication in the archive. We will share the DOIs of the data sets
-on the repository’s GitHub page after they have been published in the
-archive.
+submitting this preregistration, the wave 1 data are openly available
+(see DOI under Q5), but the other two studies are still being processed
+by LISS.
 
 ### Q8: Date of Download
 
@@ -162,7 +166,7 @@ both waves.
 
 Codebooks for the newly collected data will become available later at
 <https://www.dataarchive.lissdata.nl/study-units/view> and
-<https://github.com/StefanVermeent/liss_ef_2025>.
+<https://github.com/StefanVermeent/ddm_dif>.
 
 Go back to [Overview](#overview).
 
@@ -204,17 +208,12 @@ education/pre-university secondary education, (4) secondary vocational
 education, (5) Higher vocational education, (6) University degree. We
 will treat education as a continuous variable (centered).
 
-**Ethnicity.** Measured as LISS background variable, with five
-categories: Dutch background; First generation foreign, Western
-background; First generation foreign, non-Western background; Second
-generation foreign, Western background; Second generation foreign,
-non-western background. Given that the non-Dutch categories are sparse,
-we will collapse across people with a Western background, and across
-people with a non-Western background. Based on a previous study, this
-will result in approximately 74% of participants with a Dutch
-background, 11% with a Western migration background, and 15% with a
-non-Western migration background. Ethnicity will by dummy-coded with
-‘Dutch background’ as reference category.
+**Urban character of place of residence.** Measured as LISS background
+variable, based on the surrounding address density per km<sup>2</sup>.
+One of five categories: (1) Extremely urban (2,500 or more); (2) Very
+urban (1,500 to 2,500); (3) Moderately urban (1,000 to 1,500); (4)
+Slightly urban (500 to 1,000); and (5) Not urban (less than 500). We
+will treat urbanicity as a continuous variable (centered).
 
 **Age.** Measured as LISS background variable, in years (centered).
 
@@ -243,7 +242,8 @@ times and accuracy with empirical response times and accuracy.
 ### Q14: Missing data
 
 We will use Full Information Maximum Likelihood (FIML) to handle missing
-data.
+data in the SEM indicator variables. We will impute missing data in the
+MNLFA moderators using predictive mean matching.
 
 ### Q15: Outliers
 
@@ -282,10 +282,12 @@ Go back to [Overview](#overview).
 ### Q18: Prior Knowledge
 
 In the first previous study (Vermeent, Schubert, Dejoseph, et al., 2025;
-see Q17) the participant sample partly overlapped with the current
-sample. However, the main independent variables (recent rather than
-childhood exposures to adversity) and dependent variables (working
-memory) were different from those included in the current study.
+see Q17) we used data from the study that was fielded in 2023 (wave 1
+and wave 2—which are the focus of the current study—were not yet
+collected at the time the study was completed). The main independent
+variables (recent rather than childhood exposures to adversity) and
+dependent variables (performance on working memory tasks) were different
+from those included in the current study.
 
 In the second previous study (Vermeent, Schubert, & Frankenhuis, 2025;
 see Q17), we used wave 1 included in the current study to investigate
@@ -296,8 +298,8 @@ and task conditions. We also know that childhood adversity is negatively
 associated with task-general drift rate as well as task-specific
 residual drift rates, and that childhood adversity was not associated
 with other DDM parameters. We did not investigate measurement invariance
-in this study, and completed the study before collecting the data of
-wave 2.
+in this study, nor did we analyze raw performance measures. We completed
+the study before collecting the data of wave 2.
 
 Go back to [Overview](#overview).
 
@@ -332,14 +334,14 @@ comparative fit index (CFI) \> .90.
 
 Prior to the MNLFA analyses, we will test for configural invariance
 across different levels of each moderator. We will do so using the
-‘group’ input in the *lavaan::cfa()* function. For the categorical
-variables (ethnicity and sex), we will assess configural invariance in
-each group. For the continuous variables, we will create categorical
-groups to allow for configural invariance testing. For childhood threat
-and deprivation, we will use a median split. For age, we will create a
-group of participants \< 45 years and a group \> 45 years, based on work
-showing that EF performance starts to decline around that age. We will
-apply the same fit indice cut-offs as listed above.
+‘group’ input in the *lavaan::cfa()* function. For education and
+urbanicity, we will assess configural invariance in each group. For the
+other variables, we will create categorical groups to allow for
+configural invariance testing. For childhood threat and deprivation, we
+will use a median split. For age, we will create a group of participants
+\< 45 years and a group \> 45 years, based on work showing that EF
+performance starts to decline around that age. We will apply the same
+fit indice cut-offs as listed above.
 
 #### MNLFA analyses
 
@@ -474,11 +476,11 @@ rates (reflecting evidence accumulation).*
 latent EF factor means, indicating that some disparities reflect
 measurement non-invariance rather than true ability differences.*
 
-- **Full support**: Estimates of the impact of demographic and
-  psychosocial moderators on latent factor means are smaller in the
-  final model (which accounts for significant DIF) compared to the
-  scalar model (which constrains all DIF paths to zero), and their 95%
-  confidence intervals do not overlap between models.
+- **Full support**: Estimates of the impact of demographic and adversity
+  moderators on latent factor means are smaller in the final model
+  (which accounts for significant DIF) compared to the scalar model
+  (which constrains all DIF paths to zero), and their 95% confidence
+  intervals do not overlap between models.
 - **(partial) Non-support**: The impact estimates on latent means are
   not significantly smaller in the final model compared to the scalar
   models (i.e., their 95% confidence intervals overlap or the estimated
@@ -534,7 +536,12 @@ assessments.
 
 ### Q25: Exploratory Analyses
 
-We do not preregister any exploratory analyses.
+The mean impact analyses combine demographic and adversity measures in
+the same model. We will interpret these effects as conditional effects
+rather than direct (causal) estimates. As a sensitivity analysis, we
+will refit the final models including (1) only the impact paths of
+demographic variables, and (2) only the impact paths of adversity
+variables, and compare the effect sizes with those in the full model.
 
 Go back to [Overview](#overview).
 
