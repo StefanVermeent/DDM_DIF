@@ -22,7 +22,9 @@ pkgs <-
     "rstan",
     "runjags",
     "finalfit",
-    "openxlsx"
+    "openxlsx",
+    "purrr",
+    "future"
   )
 
 
