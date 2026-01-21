@@ -24,7 +24,8 @@ pkgs <-
     "finalfit",
     "openxlsx",
     "purrr",
-    "future"
+    "future",
+    "mice"
   )
 
 
