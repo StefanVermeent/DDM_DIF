@@ -3,10 +3,18 @@
 
 # Libraries ---------------------------------------------------------------
 
+Sys.setenv(OMP_NUM_THREADS=parallel::detectCores()) #before library(OpenMx)
+
 source("2_scripts/dependencies.R")
+
+mxOption(key='Number of Threads', value=parallel::detectCores()) 
 
 list.files("2_scripts/0_CustomFunctions", full.names = TRUE) |> 
   walk(source)
+
+
+
+
 
 # 1. Preprocessing --------------------------------------------------------
 
