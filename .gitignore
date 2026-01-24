@@ -13,3 +13,9 @@ groundhog/
 
 # but keep a placeholder so the directory exists in git
 !1_data/**/.gitkeep
+
+# ignore everything inside
+3_output/**/*.*
+
+# but keep a placeholder so the directory exists in git
+!3_output/**/.gitkeep
