@@ -8,5 +8,8 @@ groundhog/
 
 # Do not include LISS data
 
-1_data/1_inputData/*
-1_data/2_IntermediateData/*
+# ignore everything inside
+1_data/**/*.*
+
+# but keep a placeholder so the directory exists in git
+!1_data/**/.gitkeep
