@@ -272,7 +272,7 @@ modFinal_rt <- mxModel(model="FinalRT",
 fitFinal_rt <- mxRun(modFinal_rt)
 summary(fitFinal_rt)
 
-Test_final_rt <- summary(fitFinal_rt)$parameters %>% 
+TestFinal_rt <- summary(fitFinal_rt)$parameters %>% 
   as_tibble() %>% 
   filter(str_detect(matrix, "(B|C)\\d$")) %>% 
   mutate(
@@ -281,5 +281,40 @@ Test_final_rt <- summary(fitFinal_rt)$parameters %>%
   )
 
 
-save(modJoint_rt, fitJoint_rt, Test_final_rt, file = "3_output/Results/MNLFA_rt_final.RData")
+TestFinal_DDM <- summary(fitFinal_DDM)$parameters %>% 
+  as_tibble() %>% 
+  filter(matrix %in% c("matB1", "matB2", "matB3", "matB4", "matB5", "matC1", "matC2", "matC3", "matC4", "matC5", "matG1", "matG2", "matG3", "matG4", "matG5")) %>% 
+  mutate(
+    type = case_when(
+      str_detect(matrix, "mat(B|C)\\d$") ~ "dif",
+      str_detect(matrix, "mat(G)\\d") ~ "impact",
+      TRUE ~ 'other'
+    )
+  ) %>% 
+  group_by(type) %>% 
+  mutate(
+    pvalue = 2 * (1-pnorm(abs(Estimate/Std.Error))),
+    pvalue_adj = p.adjust(pvalue, method = "BH")
+  ) %>% 
+  # Add indicator and latent variable names to OpenMx parameters
+  left_join(
+    bind_rows(
+      expand_grid(matrix = c("matB1", "matB2", "matB3", "matB4", "matB5"), row = 1, col = 1:nv) %>% mutate(indicator = rep(manVars, 5), factor = NA),
+      expand_grid(matrix = c("matC1", "matC2", "matC3", "matC4", "matC5"), row = 1:nv) %>% mutate(col = rep(c(rep(1,10),rep(2,10),rep(3,10)), 5), indicator = rep(manVars, 5), factor = rep("rt", 10), 5),
+      expand_grid(matrix = c("matG1", "matG2", "matG3", "matG4", "matG5"), col = 1, row = 1) %>% mutate(indicator = NA, factor = rep(c("v","a","t"), 5))
+    ) 
+  ) %>% 
+  # Add moderator names
+  mutate(
+    mod = case_when(
+      mod = str_detect(matrix, "B1|C1|G1") ~ "age",
+      mod = str_detect(matrix, "B2|C2|G2") ~ "edu",
+      mod = str_detect(matrix, "B3|C3|G3") ~ "urb",
+      mod = str_detect(matrix, "B4|C4|G4") ~ "thr",
+      mod = str_detect(matrix, "B5|C5|G5") ~ "dep",
+    )
+  )
+
+
+save(modFinal_rt, fitFinal_rt, TestFinal_rt, file = "3_output/Results/MNLFA_rt_final.RData")
 
