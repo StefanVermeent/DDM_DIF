@@ -2,7 +2,7 @@
 
 ## 1.1 Questionnaire data ----
 raw_Q_wave1 <- read_sav("1_data/1_InputData/L_CognitiveAdversity_1.0p.sav")
-raw_Q_wave2 <- read_sav("1_data/1_InputData/L_CognitiveAdversity_2025_1.0p.sav") |> mutate(prev_participated2 = ifelse(nomem_encr %in% raw_Q_wave1$nomem_encr, 1, 0)) # re-compute; LISS-computed variable contains 39 errors
+raw_Q_wave2 <- read_sav("1_data/1_InputData/L_CognitiveAdversity_2025_1.0p.sav") |> mutate(prev_participated = ifelse(nomem_encr %in% raw_Q_wave1$nomem_encr, 1, 0)) # re-compute; LISS-computed variable contains 39 errors
 raw_Q_2023 <- read_sav("1_data/1_InputData/L_Cognitieve_Vaardigheden_v2_1.0p.sav") # Raw_2023 contains childhood  adversity measures for some participants in wave 1 and 2
 
 ## 1.2 Cognitive Task data ----
