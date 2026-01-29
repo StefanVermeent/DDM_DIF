@@ -22,6 +22,7 @@ manVars <- colnames(data_clean |> select(matches("_(con|inc|sw|rep)_l$")))
 nv <- length(manVars)
 manVars
 
+CI <- mxCI(reference = c("matG1", "matG2", "matG3", "matG4", "matG5"))
 
 ## 2.2 Create a grid specifying parameters to be constrained/estimated for combinations of indicators, moderators, and model parameters ----
 
@@ -29,7 +30,7 @@ rt_grid <- miTest_Apo_rt |>
   mutate(
     DIF     = ifelse(pvalue < .10, TRUE, FALSE)) |> 
   bind_rows( # Add rows for anchors
-    expand_grid(item = c(anchors_v), mod = unique(fitApo_v$mod), par = unique(fitApo_v$par), DIF = FALSE)
+    expand_grid(item = c(anchors_rt), mod = unique(fitApo_rt$mod), par = unique(fitApo_rt$par), DIF = FALSE)
   ) |> 
   arrange(item) |> 
   group_by(par, mod) |> 
@@ -267,23 +268,16 @@ modFinal_rt <- mxModel(model="FinalRT",
                        matA, matA0, matG1, matG2, matG3, matG4, matG5,
                        matIa, matV1, matV2, matV3, matV4, matV5,
                        matVar, matM, matC, 
-                       expF, fitF, mxdata)
+                       CI, expF, fitF, mxdata)
 
-fitFinal_rt <- mxRun(modFinal_rt)
+fitFinal_rt <- mxRun(modFinal_rt, intervals = TRUE)
 summary(fitFinal_rt)
+
+## 2.14 Unpack results and compute p-values ----
 
 TestFinal_rt <- summary(fitFinal_rt)$parameters %>% 
   as_tibble() %>% 
-  filter(str_detect(matrix, "(B|C)\\d$")) %>% 
-  mutate(
-    pvalue = 2 * (1-pnorm(abs(Estimate/Std.Error))),
-    pvalue_adj = p.adjust(pvalue, method = "BH")
-  )
-
-
-TestFinal_DDM <- summary(fitFinal_DDM)$parameters %>% 
-  as_tibble() %>% 
-  filter(matrix %in% c("matB1", "matB2", "matB3", "matB4", "matB5", "matC1", "matC2", "matC3", "matC4", "matC5", "matG1", "matG2", "matG3", "matG4", "matG5")) %>% 
+  filter(str_detect(matrix, "mat(B|C|G)")) %>% 
   mutate(
     type = case_when(
       str_detect(matrix, "mat(B|C)\\d$") ~ "dif",

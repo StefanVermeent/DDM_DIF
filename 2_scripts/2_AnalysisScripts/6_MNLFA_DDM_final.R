@@ -3,6 +3,8 @@
 
 load("3_output/Results/MNLFA_fit_v.RData")
 load("3_output/Results/MNLFA_fit_a.RData")
+load("3_output/Results/MNLFA_fit_t.RData")
+
 
 load("1_data/3_AnalysisData/clean_data.RData")
 
@@ -20,6 +22,7 @@ manVars <- colnames(data_clean |> select(matches("(v)(1|2)_l"), matches("(a)(1|2
 nv <- length(manVars)
 manVars
 
+CI <- mxCI(reference = c("matG1", "matG2", "matG3", "matG4", "matG5"))
 
 ## 2.2 Create a grid specifying parameters to be constrained/estimated for combinations of indicators, moderators, and model parameters ----
 
@@ -343,7 +346,7 @@ expF <- mxExpectationNormal(covariance="matC",
 
 fitF <- mxFitFunctionML() 
 
-modJoint_DDM <- mxModel(model="FinalDDM", 
+modFinal_DDM <- mxModel(model="FinalDDM", 
                         matT, matT0, matB1, matB2, matB3, matB4, matB5,
                         matL, matL0, matC1, matC2, matC3, matC4, matC5,
                         matE, matE0, matD1, matD2, matD3, matD4, matD5,
@@ -351,20 +354,20 @@ modJoint_DDM <- mxModel(model="FinalDDM",
                         matA, matA0, matG1, matG2, matG3, matG4, matG5,
                         matIa, matIb, matV1, matV2, matV3, matV4, matV5,
                         matVar, matR, matCov, matM, matC, 
-                        expF, fitF, mxdata)
+                        CI, expF, fitF, mxdata)
 
-fitFinal_DDM <- mxRun(modJoint_DDM)
-summary(fitJoint_DDM) 
+fitFinal_DDM <- mxRun(modFinal_DDM, intervals= T)
+summary(fitFinal_DDM) 
 
 
 
-# 3. Parse results --------------------------------------------------------
+## 2.15 Parse results ----
 
-## 3.1 Compute adjusted p-values ----
+## Compute adjusted p-values 
 
 TestFinal_DDM <- summary(fitFinal_DDM)$parameters %>% 
   as_tibble() %>% 
-  filter(matrix %in% c("matB1", "matB2", "matB3", "matB4", "matB5", "matC1", "matC2", "matC3", "matC4", "matC5", "matG1", "matG2", "matG3", "matG4", "matG5")) %>% 
+  filter(str_detect(matrix, "mat(B|C|G)")) %>% 
   mutate(
     type = case_when(
       str_detect(matrix, "mat(B|C)\\d$") ~ "dif",
@@ -396,7 +399,92 @@ TestFinal_DDM <- summary(fitFinal_DDM)$parameters %>%
     )
   )
 
-
-## 3.2 Save results ----
+# Save results 
 save(modFinal_DDM, fitFinal_DDM, TestFinal_DDM, file = "3_output/Results/MNLFA_DDM_final.RData")
+
+
+
+# 3. Estimate 3-factor scalar model ---------------------------------------
+
+# This model is to compare mean impact in a fully constrained scalar model compared to the final partial-DIF model
+
+## 3.1 Constrain indicator intercept moderations to zero ----
+matB1 <- mxMatrix(type = "Full", nrow = 1,
+                  ncol = nv,
+                  free = FALSE,
+                  values = 0,
+                  name = "matB1")
+matB2 <- mxMatrix(type = "Full", nrow = 1,
+                  ncol = nv,
+                  free = FALSE,
+                  values = 0,
+                  name = "matB2")
+matB3 <- mxMatrix(type = "Full", nrow = 1,
+                  ncol = nv,
+                  free = FALSE,
+                  values = 0,
+                  name = "matB3")
+matB4 <- mxMatrix(type = "Full", nrow = 1,
+                  ncol = nv,
+                  free = FALSE,
+                  values = 0,
+                  name = "matB4")
+matB5 <- mxMatrix(type = "Full", nrow = 1,
+                  ncol = nv,
+                  free = FALSE,
+                  values = 0,
+                  name = "matB5")
+
+## 3.2 Constrain factor loading moderations to zero ----
+matC1 <- mxMatrix(type = "Full", nrow = nv,
+                  ncol = 3,
+                  free = FALSE,
+                  values = 0,
+                  name = "matC1")
+matC2 <- mxMatrix(type = "Full", nrow = nv,
+                  ncol = 3,
+                  free = FALSE,
+                  values = 0,
+                  name = "matC2")
+matC3 <- mxMatrix(type = "Full", nrow = nv,
+                  ncol = 3,
+                  free = FALSE,
+                  values = 0,
+                  name = "matC3")
+matC4 <- mxMatrix(type = "Full", nrow = nv,
+                  ncol = 3,
+                  free = FALSE,
+                  values = 0,
+                  name = "matC4")
+matC5 <- mxMatrix(type = "Full", nrow = nv,
+                  ncol = 3,
+                  free = FALSE,
+                  values = 0,
+                  name = "matC5")
+
+
+## 3.3 Fit scalar model ----
+
+modScalar_DDM <- mxModel(model="Scalar_DDM_final", 
+                         matT, matT0, matB1, matB2, matB3, matB4, matB5,
+                         matL, matL0, matC1, matC2, matC3, matC4, matC5,
+                         matE, matE0, matD1, matD2, matD3, matD4, matD5,
+                         matP, matP0, matH1, matH2, matH3, matH4, matH5,
+                         matA, matA0, matG1, matG2, matG3, matG4, matG5,
+                         matIa, matIb, matV1, matV2, matV3, matV4, matV5,
+                         matVar, matR, matCov, matM, matC, 
+                         CI, expF, fitF, mxdata)
+
+fitScalar_DDM <- mxRun(modScalar_DDM, intervals= T)
+summary(fitScalar_DDM)
+
+
+
+# 4. Save results ---------------------------------------------------------
+
+save(modFinal_DDM, fitFinal_DDM, TestFinal_DDM,
+     modScalar_DDM, fitScalar_DDM, 
+     file = "3_output/Results/MNLFA_DDM_final.RData")
+
+
 
