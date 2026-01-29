@@ -436,6 +436,9 @@ matC5 <- mxMatrix(type = "Full", nrow = nv,
 
 ### 3.3.3 Fit scalar model ----
 
+# Add 95% CIs for impact comparison with adjusted model
+CI <- mxCI(reference = c("matG1", "matG2", "matG3", "matG4", "matG5"))
+
 modScalar_rt <- mxModel(model="Scalar", 
                         matT, matT0, matB1, matB2, matB3, matB4, matB5,
                         matL, matL0, matC1, matC2, matC3, matC4, matC5,
@@ -444,9 +447,9 @@ modScalar_rt <- mxModel(model="Scalar",
                         matA, matA0, matG1, matG2, matG3, matG4, matG5,
                         matIa, matV1, matV2, matV3, matV4, matV5,
                         matVar, matM, matC, 
-                        expF, fitF, mxdata)
+                        CI, expF, fitF, mxdata)
 
-fitScalar_rt <- mxRun(modScalar_rt)
+fitScalar_rt <- mxRun(modScalar_rt, intervals = TRUE)
 summary(fitScalar_rt)
 
 
