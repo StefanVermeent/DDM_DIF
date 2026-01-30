@@ -12,7 +12,7 @@ raw_T_wave2 <- read_delim("1_data/1_InputData/L_CognitiveAdversity_2025_TaskData
 
 ## 1.3 Custom functions ----
 
-# Required for wave 1 data only
+# Required for wave 1 data only to handle randomized task-order
 parse_json_data <- function(data, x) {
   data <- data |>
     mutate(
