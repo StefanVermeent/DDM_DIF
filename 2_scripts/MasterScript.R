@@ -30,9 +30,8 @@ source("2_scripts/1_ProcessingScripts/8_compute_variables.R")
 # 2. Analyses
 source("2_scripts/2_AnalysisScripts/1_determine_SEM_models.R")
 source("2_scripts/2_AnalysisScripts/2_MNLFA_rt.R")
-source("2_scripts/2_AnalysisScripts/2_MNLFA_v.R")
-source("2_scripts/2_AnalysisScripts/2_MNLFA_a.R")
-source("2_scripts/2_AnalysisScripts/2_MNLFA_t.R")
-source("2_scripts/2_AnalysisScripts/2_MNLFA_final.R")
-
-# 3. 
+source("2_scripts/2_AnalysisScripts/3_MNLFA_v.R")
+source("2_scripts/2_AnalysisScripts/4_MNLFA_a.R")
+source("2_scripts/2_AnalysisScripts/5_MNLFA_t.R")
+source("2_scripts/2_AnalysisScripts/6_MNLFA_DDM_final.R")
+source("2_scripts/2_AnalysisScripts/7_MNLFA_rt_final.R")

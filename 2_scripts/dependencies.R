@@ -3,7 +3,7 @@ library(groundhog)
 
 # Only run the commented out code below if the `groundhog/` folder needs to be initiated again 
 
-meta.groundhog("2025-10-01")
+#meta.groundhog("2025-10-01")
 #groundhog::set.groundhog.folder(file.path(getwd(), 'groundhog'))
 
 # Dependencies for this project
