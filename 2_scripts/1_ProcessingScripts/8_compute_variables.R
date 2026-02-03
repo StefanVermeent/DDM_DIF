@@ -216,6 +216,7 @@ save(exclusions, file = "3_output/Results/exclusions.RData")
 
 openxlsx::write.xlsx(codebook, "1_data/3_AnalysisData/metadata/codebook_AnalysisData.xlsx", colWidths = "auto")
 
-# 7. Empty global environment ---------------------------------------------
+# 7. Remove data from global environment ----------------------------------
 
-rm(list = ls())
+rm(list = names(which(!unlist(eapply(.GlobalEnv, 
+                                     \(x) inherits(x, what = "function"))))))

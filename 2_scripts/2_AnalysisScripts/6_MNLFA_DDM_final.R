@@ -487,4 +487,7 @@ save(modFinal_DDM, fitFinal_DDM, TestFinal_DDM,
      file = "3_output/Results/MNLFA_DDM_final.RData")
 
 
+# 5. Remove data from global environment ----------------------------------
 
+rm(list = names(which(!unlist(eapply(.GlobalEnv, 
+                                     \(x) inherits(x, what = "function"))))))

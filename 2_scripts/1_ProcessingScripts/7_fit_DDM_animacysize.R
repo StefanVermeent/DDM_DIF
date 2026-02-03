@@ -180,6 +180,7 @@ load("1_data/2_IntermediateData/DDM_animacysize_fit.RData")
 save(mcmc_animacysize, ddm_animacysize_fit, animacysize_traces, animacysize_param_est, animacysize_sim_fit, rhat_animacysize, file = "1_data/2_IntermediateData/DDM_animacysize_fit.RData")
 
 
-# 8. Clean global environment ---------------------------------------------
+# 8. Remove data from global environment ----------------------------------
 
-rm(list = ls())
+rm(list = names(which(!unlist(eapply(.GlobalEnv, 
+                                     \(x) inherits(x, what = "function"))))))

@@ -294,8 +294,8 @@ TestFinal_rt <- summary(fitFinal_rt)$parameters %>%
   left_join(
     bind_rows(
       expand_grid(matrix = c("matB1", "matB2", "matB3", "matB4", "matB5"), row = 1, col = 1:nv) %>% mutate(indicator = rep(manVars, 5), factor = NA),
-      expand_grid(matrix = c("matC1", "matC2", "matC3", "matC4", "matC5"), row = 1:nv) %>% mutate(col = rep(c(rep(1,10),rep(2,10),rep(3,10)), 5), indicator = rep(manVars, 5), factor = rep("rt", 10), 5),
-      expand_grid(matrix = c("matG1", "matG2", "matG3", "matG4", "matG5"), col = 1, row = 1) %>% mutate(indicator = NA, factor = rep(c("v","a","t"), 5))
+      expand_grid(matrix = c("matC1", "matC2", "matC3", "matC4", "matC5"), row = 1:nv) %>% mutate(col = 1, indicator = rep(manVars, 5), factor = "rt"),
+      expand_grid(matrix = c("matG1", "matG2", "matG3", "matG4", "matG5"), col = 1, row = 1) %>% mutate(indicator = NA, factor = "rt")
     ) 
   ) %>% 
   # Add moderator names
@@ -312,3 +312,8 @@ TestFinal_rt <- summary(fitFinal_rt)$parameters %>%
 
 save(modFinal_rt, fitFinal_rt, TestFinal_rt, file = "3_output/Results/MNLFA_rt_final.RData")
 
+
+# 7. Empty global environment ---------------------------------------------
+
+rm(list = names(which(!unlist(eapply(.GlobalEnv, 
+                                     \(x) inherits(x, what = "function"))))))

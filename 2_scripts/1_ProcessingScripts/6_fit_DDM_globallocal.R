@@ -180,6 +180,7 @@ load("1_data/2_IntermediateData/DDM_globallocal_fit.RData")
 save(mcmc_globallocal, ddm_globallocal_fit, globallocal_traces, globallocal_param_est, globallocal_sim_fit, rhat_globallocal, file = "1_data/2_IntermediateData/DDM_globallocal_fit.RData")
 
 
-# 8. Clean global environment ---------------------------------------------
+# 8. Remove data from global environment ----------------------------------
 
-rm(list = ls())
+rm(list = names(which(!unlist(eapply(.GlobalEnv, 
+                                     \(x) inherits(x, what = "function"))))))

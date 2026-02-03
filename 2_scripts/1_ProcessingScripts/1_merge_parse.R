@@ -239,6 +239,8 @@ save(flanker_raw, simon_raw, colorshape_raw, animacysize_raw, globallocal_raw, f
 save(Qdata_raw, file = "1_data/2_IntermediateData/Qdata_raw.RData")
 
 
-# 6. Empty global environment ---------------------------------------------
 
-rm(list = ls())
+# 6. Remove data from global environment ----------------------------------
+
+rm(list = names(which(!unlist(eapply(.GlobalEnv, 
+                                     \(x) inherits(x, what = "function"))))))

@@ -180,6 +180,7 @@ load("1_data/2_IntermediateData/DDM_simon_fit.RData")
 save(mcmc_simon, ddm_simon_fit, simon_traces, simon_param_est, simon_sim_fit, rhat_simon, file = "1_data/2_IntermediateData/DDM_simon_fit.RData")
 
 
-# 8. Clean global environment ---------------------------------------------
+# 8. Remove data from global environment ----------------------------------
 
-rm(list = ls())
+rm(list = names(which(!unlist(eapply(.GlobalEnv, 
+                                     \(x) inherits(x, what = "function"))))))

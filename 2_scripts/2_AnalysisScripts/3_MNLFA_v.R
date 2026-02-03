@@ -552,7 +552,7 @@ freeparL <- matrix(TRUE, nrow=10, ncol=1, byrow=TRUE)
 freeparL[anchors_v,1] <- FALSE
 
 
-## 3.5.2 Specify matrices for unconstrained model ----
+### 3.5.2 Specify matrices for unconstrained model ----
 matB1 <- mxMatrix(type="Full", nrow=1, ncol=nv,
                   free=freeparT,
                   values=0,
@@ -595,7 +595,7 @@ matC5 <- mxMatrix(type="Full", nrow=nv, ncol=1,
                   name="matC5")
 
 
-## 3.5.3 Make mxModel object and run the model ----
+### 3.5.3 Make mxModel object and run the model ----
 modAnchors_v <- mxModel(model="AnchorsOnly", 
                         matT, matT0, matB1, matB2, matB3, matB4, matB5,
                         matL, matL0, matC1, matC2, matC3, matC4, matC5,
@@ -615,7 +615,7 @@ save(fitConfig_v, fitScalar_v, omn_miTest_v,
      file = "3_output/Results/MNLFA_fit_v.RData")
 
 
-## 3.5.4 Run constrained model for each moderator and individual DIF path (except the anchors) ----
+### 3.5.4 Run constrained model for each moderator and individual DIF path (except the anchors) ----
 testIn_v <- c(1:10)[-c(anchors_v)]
 
 matC1_unc <- matC1
@@ -749,7 +749,7 @@ fitApo_v <- 1:nrow(apo_grid_v) |>
 plan("sequential")
 
 
-## Compare fit of unconstrained model with all constrained models ----
+### Compare fit of unconstrained model with all constrained models ----
 miTest_Apo_v  <- fitApo_v |> 
   rowwise() |> 
   mutate(
@@ -764,3 +764,8 @@ save(fitConfig_v, fitScalar_v, omn_miTest_v,
      fitAbo_v, anchorTest_v, anchorOut_v, anchors_v, fitAnchors_v,
      fitApo_v, miTest_Apo_v,
      file = "3_output/Results/MNLFA_fit_v.RData")
+
+# 4. Remove data from global environment ----------------------------------
+
+rm(list = names(which(!unlist(eapply(.GlobalEnv, 
+                                     \(x) inherits(x, what = "function"))))))

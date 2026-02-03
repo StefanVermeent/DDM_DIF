@@ -273,3 +273,8 @@ save(
   t_fit, t_fit_sum, t_fitstats, 
   file = "3_output/Results/SEM_models.RData"
 )
+
+# 8. Remove data from global environment ----------------------------------
+
+rm(list = names(which(!unlist(eapply(.GlobalEnv, 
+                                     \(x) inherits(x, what = "function"))))))

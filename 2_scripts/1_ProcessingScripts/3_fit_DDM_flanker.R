@@ -180,6 +180,7 @@ load("1_data/2_IntermediateData/DDM_flanker_fit.RData")
 save(mcmc_flanker, ddm_flanker_fit, flanker_traces, flanker_param_est, flanker_sim_fit, rhat_flanker, file = "1_data/2_IntermediateData/DDM_flanker_fit.RData")
 
 
-# 8. Clean global environment ---------------------------------------------
+# 8. Remove data from global environment ----------------------------------
 
-rm(list = ls())
+rm(list = names(which(!unlist(eapply(.GlobalEnv, 
+                                     \(x) inherits(x, what = "function"))))))

@@ -180,6 +180,7 @@ load("1_data/2_IntermediateData/DDM_colorshape_fit.RData")
 save(mcmc_colorshape, ddm_colorshape_fit, colorshape_traces, colorshape_param_est, colorshape_sim_fit, rhat_colorshape, file = "1_data/2_IntermediateData/DDM_colorshape_fit.RData")
 
 
-# 8. Clean global environment ---------------------------------------------
+# 8.  Remove data from global environment ----------------------------------
 
-rm(list = ls())
+rm(list = names(which(!unlist(eapply(.GlobalEnv, 
+                                     \(x) inherits(x, what = "function"))))))

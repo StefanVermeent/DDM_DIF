@@ -1,6 +1,5 @@
 
-source("2_scripts/dependencies.R")
-source("2_scripts/0_CustomFunctions/general.R")
+
 
 # 1. Load data ------------------------------------------------------------
 
@@ -443,7 +442,8 @@ save(flanker_sum, simon_sum, colorshape_sum, globallocal_sum, animacysize_sum, f
 save(Qdata_clean, file = "1_data/2_IntermediateData/Qdata_clean.RData")
 save(exclusions, file = '3_output/Results/exclusions.RData')
 
-# 4. Empty global environment ---------------------------------------------
+# 4. Remove data from global environment ----------------------------------
 
-rm(list = ls())
+rm(list = names(which(!unlist(eapply(.GlobalEnv, 
+                                     \(x) inherits(x, what = "function"))))))
 
