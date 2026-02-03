@@ -26,7 +26,8 @@ pkgs <-
     "purrr",
     "furrr",
     "future",
-    "mice"
+    "mice",
+    "flextable"
   )
 
 

@@ -1,7 +1,7 @@
 
 # 1. Load data ------------------------------------------------------------
 
-load("3_output/Results/MNLFA_fit_rt.RData")
+load("3_output/Results/2_MNLFA/MNLFA_fit_rt.RData")
 
 load("1_data/3_AnalysisData/clean_data.RData")
 
@@ -310,7 +310,7 @@ TestFinal_rt <- summary(fitFinal_rt)$parameters %>%
   )
 
 
-save(modFinal_rt, fitFinal_rt, TestFinal_rt, file = "3_output/Results/MNLFA_rt_final.RData")
+save(modFinal_rt, fitFinal_rt, TestFinal_rt, file = "3_output/Results/2_MNLFA/MNLFA_rt_final.RData")
 
 
 # 7. Empty global environment ---------------------------------------------

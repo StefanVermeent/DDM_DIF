@@ -425,7 +425,7 @@ Qdata_clean <- Qdata_raw |>
       as.numeric(edu) == "7" ~ NA,
       .default = edu
     ),
-    
+    urb = 6 - urb # Recode urbanicity so that higher values correspond to higher urbanicity
   ) |> 
   select(nomem_encr, nohouse_encr, wave, child_thr, child_dep, age, edu, urb)
 

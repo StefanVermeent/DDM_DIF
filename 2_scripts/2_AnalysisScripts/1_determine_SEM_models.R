@@ -66,7 +66,7 @@ modificationIndices(rt_div_fit) |> as_tibble() |> arrange(desc(mi))
 
 # 3. Non-preregistered RT models ------------------------------------------
 
-## 3.1 Unity model ----
+## 3.1 Unity model (selected for main analyses) ----
 
 data_clean <- data_clean |> 
     mutate(across(contains("_rt_"), ~log(.) |> scale() |> as.numeric(), .names = "{.col}_l"))
@@ -102,59 +102,8 @@ rt_un_expl1_fit <- lavaan::cfa(
   data = data_clean, 
   missing = "ml")
 
-lavaan::summary(rt_un_expl1_fit, fit.measures = TRUE, standardized = TRUE)
-
-modificationIndices(rt_un_expl1_fit) |> as_tibble() |> arrange(desc(mi))
-
-
-## 3.2 Diversity model (only shifting)----
-
-model_rt_div_expl2 <- 
-  '
-  # Factor loadings
-  G =~ NA*fl_rt_con_l + fl_rt_inc_l + si_rt_con_l + si_rt_inc_l + cs_rt_rep_l + cs_rt_sw_l + gl_rt_rep_l + gl_rt_sw_l + as_rt_rep_l + as_rt_sw_l
-  sh =~ NA*cs_rt_sw_l + gl_rt_sw_l + as_rt_sw_l
-  
-  # (Co-)variances
-  G ~~ 1*G + 0*sh
-  sh ~~ 1*sh
-  
-  fl_rt_con_l ~~ fl_rt_inc_l
-  si_rt_con_l ~~ si_rt_inc_l
-  cs_rt_rep_l ~~ cs_rt_sw_l
-  gl_rt_rep_l ~~ gl_rt_sw_l
-  as_rt_rep_l ~~ as_rt_sw_l
-  
-  
-  fl_rt_con_l ~ 0
-  si_rt_con_l ~ 0
-  cs_rt_rep_l ~ 0
-  gl_rt_rep_l ~ 0
-  as_rt_rep_l ~ 0
-  fl_rt_inc_l ~ 0
-  si_rt_inc_l ~ 0
-  cs_rt_sw_l ~ 0
-  gl_rt_sw_l ~ 0
-  as_rt_sw_l ~ 0
- 
-  
-'
-
-rt_div_expl2_fit <- lavaan::cfa(
-  model = model_rt_div_expl2, 
-  data = data_clean, 
-  missing = "ml")
-
-lavaan::summary(rt_div_expl2_fit, fit.measures = TRUE, standardized = TRUE)
-
-modificationindices(rt_div_expl2_fit) |> as_tibble() |> arrange(desc(mi))
-
-
-
-
-
-
-
+rt_un_expl1_fit_sum <- lavaan::summary(rt_un_expl1_fit, fit.measures = TRUE, standardized = TRUE)
+rt_un_expl1_fitstats <- rt_un_expl1_fit_sum$fit[c('chisq', 'df', 'pvalue', 'cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')]
 
 
 
@@ -268,10 +217,11 @@ t_fitstats <- t_fit_sum$fit[c('chisq', 'df', 'pvalue', 'cfi', 'rmsea', 'rmsea.ci
 # 7. Save data ------------------------------------------------------------
 
 save(
+  rt_un_expl1_fit, rt_un_expl1_fit_sum, rt_un_expl1_fitstats,
   v_fit, v_fit_sum, v_fitstats,
   a_fit, a_fit_sum, a_fitstats,
   t_fit, t_fit_sum, t_fitstats, 
-  file = "3_output/Results/SEM_models.RData"
+  file = "3_output/Results/1_SEM/SEM_fit.RData"
 )
 
 # 8. Remove data from global environment ----------------------------------

@@ -112,6 +112,9 @@ config_dep_t_sum <- summary(config_dep_t, fit.measures = TRUE, standardized = TR
 config_dep_t_fitstats <- config_dep_t_sum$fit[c('chisq', 'df', 'pvalue', 'cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')]
 
 
+save(config_age_t_fitstats, config_edu_t_fitstats, config_urb_t_fitstats, config_thr_t_fitstats, config_dep_t_fitstats,
+     file = "3_output/Results/1_SEM/MI_config_t.RData")
+
 
 # 3. MNLFA - Assess full measurement invariance ---------------------------
 
@@ -446,7 +449,7 @@ omn_miTest_t <- mxCompare(fitConfig_t, fitScalar_t)
 omn_miTest_t[2,c(7,8,9)]
 omn_miTest_t$p[2] < 0.001
 
-save(fitConfig_t, fitScalar_t, omn_miTest_t, file = "3_output/Results/MNLFA_fit_t.RData")
+save(fitConfig_t, fitScalar_t, omn_miTest_t, file = "3_output/Results/2_MNLFA/MNLFA_fit_t.RData")
 
 
 ## 3.4 Select anchor indicators ----
@@ -534,11 +537,11 @@ anchors_t <- head(anchorOut_t,2) %>%
   stringr::str_remove("Indicator") %>% 
   as.numeric()
 
-load("3_output/Results/MNLFA_fit_t.RData")
+load("3_output/Results/2_MNLFA/MNLFA_fit_t.RData")
 
 save(fitConfig_t, fitScalar_t, omn_miTest_t, 
      fitAbo_t, anchorTest_t, anchorOut_t, anchors_t,
-     file = "3_output/Results/MNLFA_fit_t.RData")
+     file = "3_output/Results/2_MNLFA/MNLFA_fit_t.RData")
 
 
 ## 3.5 Test partial invariance ----
@@ -608,11 +611,11 @@ modAnchors_t <- mxModel(model="AnchorsOnly",
 
 fitAnchors_t <- mxRun(modAnchors_t)
 
-load("3_output/Results/MNLFA_fit_t.RData")
+load("3_output/Results/2_MNLFA/MNLFA_fit_t.RData")
 
 save(fitConfig_t, fitScalar_t, omn_miTest_t, 
      fitAbo_t, anchorTest_t, anchorOut_t, anchors_t, fitAnchors_t,
-     file = "3_output/Results/MNLFA_fit_t.RData")
+     file = "3_output/Results/2_MNLFA/MNLFA_fit_t.RData")
 
 
 ### 3.5.4 Run constrained model for each moderator and individual DIF path (except the anchors) ----
@@ -759,12 +762,12 @@ miTest_Apo_t  <- fitApo_t |>
   )
 
 
-load("3_output/Results/MNLFA_fit_t.RData")
+load("3_output/Results/2_MNLFA/MNLFA_fit_t.RData")
 
 save(fitConfig_t, fitScalar_t, omn_miTest_t, 
      fitAbo_t, anchorTest_t, anchorOut_t, anchors_t, fitAnchors_t,
      fitApo_t, miTest_Apo_t,
-     file = "3_output/Results/MNLFA_fit_t.RData")
+     file = "3_output/Results/2_MNLFA/MNLFA_fit_t.RData")
 
 # 4. Remove data from global environment ----------------------------------
 

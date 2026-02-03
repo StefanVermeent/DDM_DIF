@@ -3,10 +3,64 @@
 
 # 1. Load data ------------------------------------------------------------
 
-load("3_output/Results/MNLFA_DDM_final.RData")
-load("3_output/Results/MNLFA_rt_final.RData")
-load("3_output/Results/MNLFA_fit_rt.RData")
+load("3_output/Results/1_SEM/SEM_fit.RData")
+load("3_output/Results/1_SEM/MI_config_rt.RData")
+load("3_output/Results/1_SEM/MI_config_v.RData")
+load("3_output/Results/1_SEM/MI_config_a.RData")
+load("3_output/Results/1_SEM/MI_config_t.RData")
 
+load("3_output/Results/2_MNLFA/MNLFA_DDM_final.RData")
+load("3_output/Results/2_MNLFA/MNLFA_rt_final.RData")
+load("3_output/Results/2_MNLFA/MNLFA_fit_rt.RData")
+
+
+
+# 2. Descriptive tables ---------------------------------------------------
+
+
+## 2.1 Correlations ----
+
+table1 <- data_clean |> 
+  select(age, edu, urb, child_thr, child_dep) |> 
+  corr_table(
+    use = "pairwise.complete.obs",
+    numbered = TRUE,
+    sample_size = FALSE, 
+    stats = list("mean", "sd", "skew", "kurtosis", "min", "max"),
+    c.names = c("Age", "Highest education", "Urbanicity", "Childhood threat", "Childhood deprivation")
+    ) 
+
+
+
+# 3. SEM modeling ---------------------------------------------------------
+
+## 3.1 Model fit ----
+
+SEM_fit <- rlang::list2(rt = rt_un_expl1_fitstats, v = v_fitstats, a = a_fitstats, t = t_fitstats) %>%
+  imap_dfr(\(x, nm) {
+    x %>%
+      as_tibble(rownames = "statistic") %>%
+      filter(statistic %in% c("cfi", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper")) %>%
+      mutate(model = nm)
+  }) |> 
+  pivot_wider(names_from = "statistic", values_from = "value") |> 
+  mutate(across(-model, ~formatC(., digits = 3, format = "f"))) |> 
+  nest(data = -model) |> 
+  deframe()
+
+## 3.2 Configural invariance ----
+
+MI_config <- str_subset(ls(), "^config.*fitstats") |> 
+  map_dfr(\(nm) {
+    get(nm) |>                       
+      as_tibble(rownames = "statistic") |> 
+      filter(statistic %in% c("cfi", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper")) |> 
+      mutate(model = nm)             
+  }) |> 
+  pivot_wider(names_from = "statistic", values_from = "value") |> 
+  mutate(across(-model, ~formatC(., digits = 3, format = "f"))) |> 
+  nest(data = -model) |> 
+  deframe()
 
 
 # 2. Prepare DIF dataframes -----------------------------------------------
@@ -250,6 +304,7 @@ plot_intercept_DIF <- DIF_intercepts |>
     legend.position = "bottom"
   )
 
+ggsave(plot = plot_intercept_DIF, path = "3_output", filename = "figure.png", width = 10.5, height = 8.5)
 
 ## 3.2 Loading DIF plots ----
 
@@ -564,4 +619,4 @@ impact_stats <- impact_df |>
 # 8. Save objects ---------------------------------------------------------
 
 save(plot_intercept_DIF, plot_loading_DIF, plot_impact, file = "3_output/Results/3_plots/MNLFA_figures.RData")
-save(DIF_int_rt_stats, DIF_int_ddm_stats, DIF_load_rt_stats, DIF_load_ddm_stats, impact_stats, file = "3_output/Results/4_staging/intext_stats.RData")
+save(SEM_fit, MI_config, DIF_int_rt_stats, DIF_int_ddm_stats, DIF_load_rt_stats, DIF_load_ddm_stats, impact_stats, file = "3_output/Results/4_staging/intext_stats.RData")

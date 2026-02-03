@@ -1,9 +1,9 @@
 
 # 1. Load data ------------------------------------------------------------
 
-load("3_output/Results/MNLFA_fit_v.RData")
-load("3_output/Results/MNLFA_fit_a.RData")
-load("3_output/Results/MNLFA_fit_t.RData")
+load("3_output/Results/2_MNLFA/MNLFA_fit_v.RData")
+load("3_output/Results/2_MNLFA/MNLFA_fit_a.RData")
+load("3_output/Results/2_MNLFA/MNLFA_fit_t.RData")
 
 
 load("1_data/3_AnalysisData/clean_data.RData")
@@ -400,7 +400,7 @@ TestFinal_DDM <- summary(fitFinal_DDM)$parameters %>%
   )
 
 # Save results 
-save(modFinal_DDM, fitFinal_DDM, TestFinal_DDM, file = "3_output/Results/MNLFA_DDM_final.RData")
+save(modFinal_DDM, fitFinal_DDM, TestFinal_DDM, file = "3_output/Results/2_MNLFA/MNLFA_DDM_final.RData")
 
 
 
@@ -484,7 +484,7 @@ summary(fitScalar_DDM)
 
 save(modFinal_DDM, fitFinal_DDM, TestFinal_DDM,
      modScalar_DDM, fitScalar_DDM, 
-     file = "3_output/Results/MNLFA_DDM_final.RData")
+     file = "3_output/Results/2_MNLFA/MNLFA_DDM_final.RData")
 
 
 # 5. Remove data from global environment ----------------------------------
