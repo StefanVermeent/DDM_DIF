@@ -3,6 +3,8 @@
 
 # 1. Load data ------------------------------------------------------------
 
+load("1_data/3_AnalysisData/clean_data.RData")
+
 load("3_output/Results/1_SEM/SEM_fit.RData")
 load("3_output/Results/1_SEM/MI_config_rt.RData")
 load("3_output/Results/1_SEM/MI_config_v.RData")
@@ -249,39 +251,83 @@ DIF_loadings <- missing_effects |>
 
 # 3. Generate DIF Figures -------------------------------------------------
 
+gap <- 0.2 # Visual gap between boxes of Figure
+n_boxes <- 10
+
+box_offsets <- tibble(
+  box = 1:n_boxes,
+  offset = (0:(n_boxes -1)) * gap
+)
+
 # Dataframes for adding boxes/lines to the plots
 vlines <- tibble(
-  x = rep(c(1.5, 2.5), 10),  
-  ymin = rep(seq(0.5, 19.5, by = 2), each = 2),                        
-  ymax = rep(seq(1.5, 20.5, by = 2), each = 2)                           
-)
+  x    = rep(c(1.5, 2.5), n_boxes),
+  ymin = rep(seq(0.5, 19.5, by = 2), each = 2),
+  ymax = rep(seq(1.5, 20.5, by = 2), each = 2),
+  box  = rep(1:n_boxes, each = 2)
+) |>
+  left_join(box_offsets, by = "box") |>
+  mutate(ymin = ymin + offset, ymax = ymax + offset)
 
 hlines <- tibble(
-  x = 0.5,
+  x    = 0.5,
   xend = 3.5,
-  y = seq(1.5, 20.5, 1)
-)
+  y    = seq(1.5, 20.5, 1),
+  box  = ceiling((y - 0.5) / 2)        # which box this line belongs to
+) |>
+  left_join(box_offsets, by = "box") |>
+  mutate(y = y + offset)
 
-boxlines <- tibble(xmin = 0.5, xmax = 3.5, ymin = seq(0.5, 20.5, 2), ymax = seq(2.5, 22.5, 2))
+boxlines <- tibble(
+  xmin = 0.5,
+  xmax = 3.5,
+  ymin = seq(0.5, 19.5, by = 2),
+  ymax = seq(2.5, 21.5, by = 2),
+  box  = 1:n_boxes
+) |>
+  left_join(box_offsets, by = "box") |>
+  mutate(ymin = ymin + offset, ymax = ymax + offset)
+
+
+
+# Breaks should sit at the midpoint of each tile, now shifted
+y_breaks <- seq(1.5, 19.5, by = 2) + box_offsets$offset   # midpoints per box
+y_lim_lo <- min(boxlines$ymin) + 0.95
+y_lim_hi <- max(boxlines$ymax) - 0.95
 
 ## 3.1 Intercept DIF plots ----
 
-plot_intercept_DIF <- DIF_intercepts |> 
-  ggplot() + 
-  geom_tile(aes(x = factor, y = as.numeric(y), fill = estimate_num)) +
-  geom_text(aes(x = factor, y = as.numeric(y), label = estimate_chr, color = txt_color), show.legend = FALSE) +
-  geom_rect(data = boxlines, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = 2.5), fill = NA, color =  "black", linewidth = 2) +
-  geom_segment(data = vlines, aes(x=x, xend=x, y=ymin, yend=ymax)) +
-  geom_segment(data = hlines, aes(x=x, xend = xend, y = y))  +
+# Add box number and offset to DIF_intercepts
+DIF_intercepts <- DIF_intercepts |>
+  mutate(
+    y_num  = as.numeric(y),
+    box    = ceiling(y_num / 2),
+  ) |>
+  left_join(box_offsets, by = "box") |>
+  mutate(y_plot = y_num + offset)
+
+
+plot_intercept_DIF <- DIF_intercepts |>
+  ggplot() +
+  geom_tile(aes(x = factor, y = y_plot, fill = estimate_num)) +
+  geom_text(aes(x = factor, y = y_plot, label = estimate_chr, color = txt_color),
+            show.legend = FALSE) +
+  geom_rect(data = boxlines,
+            aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+            fill = NA, color = "black", linewidth = 2) +
+  geom_segment(data = vlines,
+               aes(x = x, xend = x, y = ymin, yend = ymax)) +
+  geom_segment(data = hlines,
+               aes(x = x, xend = xend, y = y)) +
   facet_wrap(~mod, ncol = 5) +
   scale_y_continuous(
-    breaks = seq(1.5, 19.5, by = 2), 
+    breaks = y_breaks,
     labels = c("Animacy-size\nSwitch", "Animacy-size\nRepeat",
-               "Global-local\nSwitch", "Global-local\nRepeat",
-               "Color-shape\nSwitch", "Color-shape\nRepeat",
-               "Simon\nIncongruent", "Simon\nCongruent",
-               "Flanker\nIncongruent", "Flanker\nCongruent"
-    )) +
+               "Global-local\nSwitch",  "Global-local\nRepeat",
+               "Color-shape\nSwitch",   "Color-shape\nRepeat",
+               "Simon\nIncongruent",    "Simon\nCongruent",
+               "Flanker\nIncongruent",  "Flanker\nCongruent")
+  ) +
   scale_fill_gradient2(
     na.value = "white",
     low  = "#a6611a",
@@ -292,38 +338,51 @@ plot_intercept_DIF <- DIF_intercepts |>
     oob = scales::squish
   ) +
   scale_color_manual(values = c(sig = "black", nonsig = "darkgrey")) +
-  coord_cartesian(ylim  = c(1.35, 19.65)) +
+  coord_cartesian(ylim = c(y_lim_lo, y_lim_hi)) +
   theme_minimal() +
   theme(
-    axis.title = element_blank(),
-    axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
-    axis.text.y = element_text(size = 12),
-    strip.text = element_text(size = 12, face = "bold"),
-    legend.text = element_text(size = 11),
-    legend.title = element_blank(),
+    axis.title    = element_blank(),
+    axis.text.x   = element_text(size = 12, color = "black", angle = 45, hjust = 1),
+    axis.text.y   = element_text(size = 12, color = "black"),
+    strip.text    = element_text(size = 12, face = "bold"),
+    legend.text   = element_text(size = 11),
+    legend.title  = element_blank(),
     legend.position = "bottom"
   )
 
-ggsave(plot = plot_intercept_DIF, path = "3_output", filename = "figure.png", width = 10.5, height = 8.5)
 
 ## 3.2 Loading DIF plots ----
 
-plot_loading_DIF <- DIF_loadings |> 
-  ggplot() + 
-  geom_tile(aes(x = factor, y = as.numeric(y), fill = estimate_num)) +
-  geom_text(aes(x = factor, y = as.numeric(y), label = estimate_chr, color = txt_color), show.legend = FALSE) +
-  geom_rect(data = boxlines, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = 2.5), fill = NA, color =  "black", linewidth = 2) +
-  geom_segment(data = vlines, aes(x=x, xend=x, y=ymin, yend=ymax)) +
-  geom_segment(data = hlines, aes(x=x, xend = xend, y = y))  +
+DIF_loadings <- DIF_loadings |>
+  mutate(
+    y_num  = as.numeric(y),
+    box    = ceiling(y_num / 2),
+  ) |>
+  left_join(box_offsets, by = "box") |>
+  mutate(y_plot = y_num + offset)
+
+
+plot_loading_DIF <- DIF_loadings |>
+  ggplot() +
+  geom_tile(aes(x = factor, y = y_plot, fill = estimate_num)) +
+  geom_text(aes(x = factor, y = y_plot, label = estimate_chr, color = txt_color),
+            show.legend = FALSE) +
+  geom_rect(data = boxlines,
+            aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+            fill = NA, color = "black", linewidth = 2) +
+  geom_segment(data = vlines,
+               aes(x = x, xend = x, y = ymin, yend = ymax)) +
+  geom_segment(data = hlines,
+               aes(x = x, xend = xend, y = y)) +
   facet_wrap(~mod, ncol = 5) +
   scale_y_continuous(
-    breaks = seq(1.5, 19.5, by = 2), 
+    breaks = y_breaks,
     labels = c("Animacy-size\nSwitch", "Animacy-size\nRepeat",
-               "Global-local\nSwitch", "Global-local\nRepeat",
-               "Color-shape\nSwitch", "Color-shape\nRepeat",
-               "Simon\nIncongruent", "Simon\nCongruent",
-               "Flanker\nIncongruent", "Flanker\nCongruent"
-    )) +
+               "Global-local\nSwitch",  "Global-local\nRepeat",
+               "Color-shape\nSwitch",   "Color-shape\nRepeat",
+               "Simon\nIncongruent",    "Simon\nCongruent",
+               "Flanker\nIncongruent",  "Flanker\nCongruent")
+  ) +
   scale_fill_gradient2(
     na.value = "white",
     low  = "#a6611a",
@@ -334,15 +393,15 @@ plot_loading_DIF <- DIF_loadings |>
     oob = scales::squish
   ) +
   scale_color_manual(values = c(sig = "black", nonsig = "darkgrey")) +
-  coord_cartesian(ylim  = c(1.35, 19.65)) +
+  coord_cartesian(ylim = c(y_lim_lo, y_lim_hi)) +
   theme_minimal() +
   theme(
-    axis.title = element_blank(),
-    axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
-    axis.text.y = element_text(size = 12),
-    strip.text = element_text(size = 12, face = "bold"),
-    legend.text = element_text(size = 11),
-    legend.title = element_blank(),
+    axis.title    = element_blank(),
+    axis.text.x   = element_text(size = 12, color = "black", angle = 45, hjust = 1),
+    axis.text.y   = element_text(size = 12, color = "black"),
+    strip.text    = element_text(size = 12, face = "bold"),
+    legend.text   = element_text(size = 11),
+    legend.title  = element_blank(),
     legend.position = "bottom"
   )
 
@@ -568,7 +627,7 @@ plot_impact <- impact_df |>
   ggplot(aes(mod, estimate, color = model)) +
   geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, fill = measure), color = "black", alpha = 0.08, show.legend = FALSE) +
   geom_hline(yintercept = 0, linetype = "dashed", linewidth = 1) +
-  geom_errorbar(aes(ymin = lbound, ymax = ubound), position = position_dodge(0.6), width = 0.3, size = 1) +
+  geom_errorbar(aes(ymin = lbound, ymax = ubound), position = position_dodge(0.6), width = 0.3, linewidth = 1) +
   geom_point(aes(fill = measure), size = 3, position = position_dodge(0.6)) +
   scale_color_manual(values = c("#e08214", "#542788")) +
   scale_fill_manual(values = c(rt = "#fee0b6", ddm = "#d8daeb")) +
@@ -618,5 +677,5 @@ impact_stats <- impact_df |>
 
 # 8. Save objects ---------------------------------------------------------
 
-save(plot_intercept_DIF, plot_loading_DIF, plot_impact, file = "3_output/Results/3_plots/MNLFA_figures.RData")
+save(table1, plot_intercept_DIF, plot_loading_DIF, plot_impact, file = "3_output/Results/3_plots/tables_figures.RData")
 save(SEM_fit, MI_config, DIF_int_rt_stats, DIF_int_ddm_stats, DIF_load_rt_stats, DIF_load_ddm_stats, impact_stats, file = "3_output/Results/4_staging/intext_stats.RData")

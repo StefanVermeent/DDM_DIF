@@ -28,6 +28,10 @@ parse_json_data <- function(data, x) {
   return(data$var)
 }
 
+
+# Store all exclusions in a list as we go
+exclusions <- list()
+
 # 2. Merge data across waves -----------------------------------
 
 ## 2.1 Merge Questionnaire data ----
@@ -44,6 +48,8 @@ Qdata_raw <- raw_Q_wave2 |>
     )
   ) |> 
   filter(if_any(c(starts_with("VP"), starts_with("PP")), ~!is.na(.)))
+
+exclusions$sample$initial_n <- nrow(Qdata_raw)
 
 ## 2.2 Merge cognitive task data ----
 
@@ -214,6 +220,8 @@ animacysize_raw <- animacysize_raw |> filter(nomem_encr %in% all_complete_ids)
 globallocal_raw <- globallocal_raw |> filter(nomem_encr %in% all_complete_ids)
 
 
+exclusions$sample$incomplete_tasks <- length(all_incomplete_ids)
+
 # 5. Select one participant per household ---------------------------------
 
 set.seed(34546)
@@ -233,12 +241,14 @@ animacysize_raw <- animacysize_raw |> filter(nomem_encr %in% sampled_participant
 
 Qdata_raw <- Qdata_raw |> filter(nomem_encr %in% sampled_participants)
 
+exclusions$sample$n_samehh <- nrow(Qdata_raw) - length(sampled_participants) - length(all_incomplete_ids)
+
 # 5. Save data ------------------------------------------------------------
 
 save(flanker_raw, simon_raw, colorshape_raw, animacysize_raw, globallocal_raw, file = "1_data/2_IntermediateData/Tdata_raw.RData")
 save(Qdata_raw, file = "1_data/2_IntermediateData/Qdata_raw.RData")
 
-
+save(exclusions, file = '3_output/Results/exclusions.RData')
 
 # 6. Remove data from global environment ----------------------------------
 

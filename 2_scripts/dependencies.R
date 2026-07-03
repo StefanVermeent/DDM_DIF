@@ -26,8 +26,11 @@ pkgs <-
     "purrr",
     "furrr",
     "future",
+    "parallel",
     "mice",
-    "flextable"
+    "flextable",
+    "splithalf",
+    "patchwork"
   )
 
 

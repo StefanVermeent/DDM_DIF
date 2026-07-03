@@ -6,7 +6,7 @@
 load("1_data/2_IntermediateData/Tdata_raw.RData")
 load("1_data/2_IntermediateData/Qdata_raw.RData")
 
-exclusions <- list()
+load('3_output/Results/exclusions.RData')
 
 # 2. Clean trial-level data (preregistered) -------------------------------
 

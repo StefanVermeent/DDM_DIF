@@ -5,7 +5,7 @@ load("1_data/3_AnalysisData/clean_data.RData")
 
 data_clean <- data_clean |> 
   mutate(
-    across(matches("a(1|2)"), ~scale(.) |> as.numeric(), .names = "{.col}_l"),
+    across(matches("a(1|2)_c"), ~scale(.) |> as.numeric()),
     across(matches("urb_c|edu_c|age_c|child_dep|child_thr"), ~scale(.) |> as.numeric())
   )
 
@@ -45,16 +45,16 @@ data_clean_conf <- data_clean |>
 model <-   
   '
   # Factor loadings
-  A =~ NA*fl_a1_l + fl_a2_l + si_a1_l + si_a2_l + cs_a1_l + cs_a2_l + gl_a1_l + gl_a2_l + as_a1_l + as_a2_l
+  A =~ NA*fl_a1_c + fl_a2_c + si_a1_c + si_a2_c + cs_a1_c + cs_a2_c + gl_a1_c + gl_a2_c + as_a1_c + as_a2_c
   
   # (Co-)variances
   A ~~ 1*A 
 
-  fl_a1_l ~~ fl_a2_l
-  si_a1_l ~~ si_a2_l
-  cs_a1_l ~~ cs_a2_l
-  gl_a1_l ~~ gl_a2_l
-  as_a1_l ~~ as_a2_l
+  fl_a1_c ~~ fl_a2_c
+  si_a1_c ~~ si_a2_c
+  cs_a1_c ~~ cs_a2_c
+  gl_a1_c ~~ gl_a2_c
+  as_a1_c ~~ as_a2_c
 '
 
 
@@ -120,7 +120,7 @@ save(config_age_a_fitstats, config_edu_a_fitstats, config_urb_a_fitstats, config
 
 ## 3.1 Create data objects ----
 mxdata <- mxData(observed = data_clean, type = "raw")
-manVars <- colnames(data_clean |> select(matches("_a(1|2)_l$")))  
+manVars <- colnames(data_clean |> select(matches("_a(1|2)_c$")))  
 nv <- length(manVars)
 manVars
 

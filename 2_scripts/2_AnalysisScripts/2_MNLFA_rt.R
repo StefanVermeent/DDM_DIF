@@ -5,7 +5,7 @@ load("1_data/3_AnalysisData/clean_data.RData")
 
 data_clean <- data_clean |> 
   mutate(
-    across(matches("(con|inc|rep|sw)$"), ~scale(.) |> as.numeric(), .names = "{.col}_l"),
+    across(matches("(con|inc|rep|sw)_c$"), ~scale(.) |> as.numeric()),
     across(matches("urb_c|edu_c|age_c|child_dep|child_thr"), ~scale(.) |> as.numeric())
   )
 
@@ -45,27 +45,27 @@ data_clean_conf <- data_clean |>
 model <-   
   '
   # Factor loadings
-  EF =~ NA*fl_rt_con_l + fl_rt_inc_l + si_rt_con_l + si_rt_inc_l + cs_rt_rep_l + cs_rt_sw_l + gl_rt_rep_l + gl_rt_sw_l + as_rt_rep_l + as_rt_sw_l
+  EF =~ NA*fl_rt_con_c + fl_rt_inc_c + si_rt_con_c + si_rt_inc_c + cs_rt_rep_c + cs_rt_sw_c + gl_rt_rep_c + gl_rt_sw_c + as_rt_rep_c + as_rt_sw_c
   
   # (Co-)variances
   EF ~~ 1*EF
 
-  fl_rt_con_l ~~ fl_rt_inc_l
-  si_rt_con_l ~~ si_rt_inc_l
-  cs_rt_rep_l ~~ cs_rt_sw_l 
-  gl_rt_rep_l ~~ gl_rt_sw_l 
-  as_rt_rep_l ~~ as_rt_sw_l 
+  fl_rt_con_c ~~ fl_rt_inc_c
+  si_rt_con_c ~~ si_rt_inc_c
+  cs_rt_rep_c ~~ cs_rt_sw_c
+  gl_rt_rep_c ~~ gl_rt_sw_c
+  as_rt_rep_c ~~ as_rt_sw_c 
   
-  fl_rt_con_l ~ 0
-  si_rt_con_l ~ 0
-  cs_rt_rep_l ~ 0
-  gl_rt_rep_l ~ 0
-  as_rt_rep_l ~ 0
-  fl_rt_inc_l ~ 0
-  si_rt_inc_l ~ 0
-  cs_rt_sw_l ~ 0
-  gl_rt_sw_l ~ 0
-  as_rt_sw_l ~ 0
+  fl_rt_con_c ~ 0
+  si_rt_con_c ~ 0
+  cs_rt_rep_c ~ 0
+  gl_rt_rep_c ~ 0
+  as_rt_rep_c ~ 0
+  fl_rt_inc_c ~ 0
+  si_rt_inc_c ~ 0
+  cs_rt_sw_c ~ 0
+  gl_rt_sw_c ~ 0
+  as_rt_sw_c ~ 0
 '
 
 config_age_rt <- lavaan::cfa(
@@ -130,7 +130,7 @@ save(config_age_rt_fitstats, config_edu_rt_fitstats, config_urb_rt_fitstats, con
 
 ## 3.1 Create data objects ----
 mxdata <- mxData(observed = data_clean, type = "raw")
-manVars <- colnames(data_clean |> select(matches("_(con|inc|sw|rep)_l$")))  
+manVars <- colnames(data_clean |> select(matches("_(con|inc|sw|rep)_c$")))  
 nv <- length(manVars)
 manVars
 

@@ -4,8 +4,8 @@
 load("1_data/3_AnalysisData/clean_data.RData")
 
 data_clean <- data_clean |> 
-  mutate(across(ends_with("_score"), ~scale(.) |> as.numeric(), .names = "{.col}_c")) |> 
-  mutate(across(matches("v(1|2)$|a(1|2)$|t(1|2)$"), ~scale(.) |> as.numeric(), .names = "{.col}_c"))
+  mutate(across(matches("_(score|con|inc|sw|rep)_c$"), ~scale(.) |> as.numeric())) |> 
+  mutate(across(matches("v(1|2)_c$|a(1|2)_c$|t(1|2)_c$"), ~scale(.) |> as.numeric()))
 
 # 2. Preregistered RT models ----------------------------------------------
 
@@ -68,33 +68,30 @@ modificationIndices(rt_div_fit) |> as_tibble() |> arrange(desc(mi))
 
 ## 3.1 Unity model (selected for main analyses) ----
 
-data_clean <- data_clean |> 
-    mutate(across(contains("_rt_"), ~log(.) |> scale() |> as.numeric(), .names = "{.col}_l"))
-
 model_rt_un_expl1 <- 
   '
   # Factor loadings
-  EF =~ NA*fl_rt_con_l + fl_rt_inc_l + si_rt_con_l + si_rt_inc_l + cs_rt_rep_l + cs_rt_sw_l + gl_rt_rep_l + gl_rt_sw_l + as_rt_rep_l + as_rt_sw_l
+  EF =~ NA*fl_rt_con_c + fl_rt_inc_c + si_rt_con_c + si_rt_inc_c + cs_rt_rep_c + cs_rt_sw_c + gl_rt_rep_c + gl_rt_sw_c + as_rt_rep_c + as_rt_sw_c
   
   # (Co-)variances
   EF ~~ 1*EF
 
-  fl_rt_con_l ~~ fl_rt_inc_l
-  si_rt_con_l ~~ si_rt_inc_l
-  cs_rt_rep_l ~~ cs_rt_sw_l 
-  gl_rt_rep_l ~~ gl_rt_sw_l 
-  as_rt_rep_l ~~ as_rt_sw_l 
+  fl_rt_con_c ~~ fl_rt_inc_c
+  si_rt_con_c ~~ si_rt_inc_c
+  cs_rt_rep_c ~~ cs_rt_sw_c 
+  gl_rt_rep_c ~~ gl_rt_sw_c
+  as_rt_rep_c ~~ as_rt_sw_c 
   
-  fl_rt_con_l ~ 0
-  si_rt_con_l ~ 0
-  cs_rt_rep_l ~ 0
-  gl_rt_rep_l ~ 0
-  as_rt_rep_l ~ 0
-  fl_rt_inc_l ~ 0
-  si_rt_inc_l ~ 0
-  cs_rt_sw_l ~ 0
-  gl_rt_sw_l ~ 0
-  as_rt_sw_l ~ 0
+  fl_rt_con_c ~ 0
+  si_rt_con_c ~ 0
+  cs_rt_rep_c ~ 0
+  gl_rt_rep_c ~ 0
+  as_rt_rep_c ~ 0
+  fl_rt_inc_c ~ 0
+  si_rt_inc_c ~ 0
+  cs_rt_sw_c ~ 0
+  gl_rt_sw_c ~ 0
+  as_rt_sw_c ~ 0
 '
 
 rt_un_expl1_fit <- lavaan::cfa(
