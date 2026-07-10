@@ -1,7 +1,7 @@
 ## This is a Docker Container that can be used to make the scripts in this repository fully reproducible ##
 ## For more information on how to use Docker to reproduce the analyses, see the project README file.
 
-# Initiate RStudio cloud environment with version 4.1.2
+# Initiate RStudio cloud environment with version 4.5.
 FROM rocker/rstudio:4.5.1
 
 LABEL maintainer="p.c.s.vermeent@gmail.com"
@@ -39,7 +39,10 @@ RUN mkdir -p /project/2_scripts \
              /project/1_data/1_InputData \
              /project/1_data/2_IntermediateData \
              /project/1_data/3_AnalysisData \
-             /project/3_output/Results \
+             /project/3_output/Results/1_SEM \
+	     /project/3_output/Results/2_MNLFA \
+	     /project/3_output/Results/3_plots \
+             /project/3_output/Results/4_staging \
              /project/3_output/SupplementResults \
              /project/4_manuscript
 
