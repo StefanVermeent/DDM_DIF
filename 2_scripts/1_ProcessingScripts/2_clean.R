@@ -293,13 +293,15 @@ simon_sum <- simon_sum |> select(-starts_with("remove"))
 ## 3.3 Color-shape ----
 
 colorshape_sum <- colorshape_clean |> 
+  mutate(condition = ifelse(condition == 1, "rep", "sw")) |> 
+  group_by(nomem_encr) |> 
   mutate(
-    condition = ifelse(condition == 1, "rep", "sw"),
     remove    = case_when(
       lag(correct, n = 1) == 0 ~ TRUE,
       correct == 0             ~ TRUE,
       .default = FALSE
     )) |> 
+  ungroup() |> 
   filter(remove == FALSE) |> 
   group_by(nomem_encr, wave, condition) |> 
   summarise(rt = mean(rt, na.rm = TRUE)) |> 
@@ -329,13 +331,15 @@ colorshape_sum <- colorshape_sum |> select(-starts_with("remove"))
 ## 3.4 Global-Local ----
 
 globallocal_sum <- globallocal_clean |> 
+  mutate(condition = ifelse(condition == 1, "rep", "sw")) |> 
+  group_by(nomem_encr) |>   
   mutate(
-    condition = ifelse(condition == 1, "rep", "sw"),
     remove    = case_when(
       lag(correct, n = 1) == 0 ~ TRUE,
       correct == 0             ~ TRUE,
       .default = FALSE
     )) |> 
+  ungroup() |> 
   filter(remove == FALSE) |> 
   group_by(nomem_encr, wave, condition) |> 
   summarise(rt = mean(rt, na.rm = TRUE)) |> 
@@ -366,13 +370,15 @@ globallocal_sum <- globallocal_sum |> select(-starts_with("remove"))
 ## 3.5 Animacy-size
 
 animacysize_sum <- animacysize_clean |> 
+  mutate(condition = ifelse(condition == 1, "rep", "sw")) |> 
+  group_by(nomem_encr) |>   
   mutate(
-    condition = ifelse(condition == 1, "rep", "sw"),
     remove    = case_when(
       lag(correct, n = 1) == 0 ~ TRUE,
       correct == 0             ~ TRUE,
       .default = FALSE
     )) |> 
+  ungroup() |> 
   filter(remove == FALSE) |> 
   group_by(nomem_encr, wave, condition) |> 
   summarise(rt = mean(rt, na.rm = TRUE)) |> 
@@ -418,11 +424,11 @@ Qdata_clean <- Qdata_raw |>
     child_dep = across(c(starts_with("PP"))) |> rowMeans(na.rm = T),
     
     edu = case_when(
-      as.numeric(edu) == "7" & as.numeric(oplzon) != "7" ~ as.numeric(oplzon),
-      as.numeric(edu) == "8" & as.numeric(oplzon) != "8" ~ as.numeric(oplzon),
-      as.numeric(edu) == "8" & as.numeric(oplzon) == "8" ~ 1,
-      as.numeric(edu) == "9" ~ 1,
-      as.numeric(edu) == "7" ~ NA,
+      as.numeric(edu) == 7 & as.numeric(oplzon) != 7 ~ as.numeric(oplzon),
+      as.numeric(edu) == 8 & as.numeric(oplzon) != 8 ~ as.numeric(oplzon),
+      as.numeric(edu) == 8 & as.numeric(oplzon) == 8 ~ 1,
+      as.numeric(edu) == 9 ~ 1,
+      as.numeric(edu) == 7 ~ NA,
       .default = edu
     ),
     urb = 6 - urb # Recode urbanicity so that higher values correspond to higher urbanicity

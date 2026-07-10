@@ -247,7 +247,7 @@ data_clean <- data_clean |>
     child_thr    = "Average score on childhood threat items",
     child_dep    = "Average score on childhood deprivation items",
     urb          = "Urban character of place of residence (based on surrounding address density per km^2^",
-    urb          = "Urban character of place of residence; centered",
+    urb_c          = "Urban character of place of residence; centered",
     age          = "Age in years", 
     age_c        = "Age in years; centered",
     edu          = "Highest obtained education",

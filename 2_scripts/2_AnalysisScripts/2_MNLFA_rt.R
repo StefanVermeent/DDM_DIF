@@ -27,7 +27,7 @@ data_clean_conf <- data_clean |>
     child_thr_cat = case_when(
       child_thr <  median(child_thr, na.rm = TRUE) ~ "low",
       child_thr == median(child_thr, na.rm = TRUE) ~ "mid",
-      child_thr >=  median(child_thr, na.rm = TRUE) ~ "high",
+      child_thr >  median(child_thr, na.rm = TRUE) ~ "high",
     ),
     urb_cat = urb,
     age_cat = ifelse(age <= 45, "18-45", "45+"),
@@ -536,10 +536,10 @@ for (i in 1:nv) {
 ### 3.4.2 Compare constrained model with all unconstrained models ----
 
 anchorTest_rt <- mxCompare(fitAbo_rt, fitScalar_rt)
-anchorOut_rt <- data.frame(Name=paste0("Indicator",1:10), 
-                           X2=anchorTest_rt$diffLL[seq(2,20,2)],
-                           df=anchorTest_rt$diffdf[seq(2,20,2)],
-                           p=anchorTest_rt$p[seq(2,20,2)]) %>% 
+anchorOut_rt <- data.frame(Name=paste0("Indicator",1:nv), 
+                           X2=anchorTest_rt$diffLL[seq(2,(2*nv),2)],
+                           df=anchorTest_rt$diffdf[seq(2,(2*nv),2)],
+                           p=anchorTest_rt$p[seq(2,(2*nv),2)]) %>% 
   arrange(X2)
 
 
@@ -650,8 +650,8 @@ apo_grid_rt <- expand_grid(
   item = testIn_rt, mods = c("age", "edu", "urb", "thr", "dep"), par = c("intercept", "loading")
 ) 
 
-mxOption(key="Number of Threads", value=8)
-future::plan(multisession, workers = 20)
+mxOption(key="Number of Threads", value =  (parallel::detectCores()/2)-1)
+future::plan(multisession, workers = (parallel::detectCores()/2)-1)
 
 fitApo_rt <- 1:nrow(apo_grid_rt) |>  
   furrr::future_map_dfr(function(i) {

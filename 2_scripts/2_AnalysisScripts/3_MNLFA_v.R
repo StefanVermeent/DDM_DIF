@@ -27,7 +27,7 @@ data_clean_conf <- data_clean |>
     child_thr_cat = case_when(
       child_thr <  median(child_thr, na.rm = TRUE) ~ "low",
       child_thr == median(child_thr, na.rm = TRUE) ~ "mid",
-      child_thr >=  median(child_thr, na.rm = TRUE) ~ "high",
+      child_thr >  median(child_thr, na.rm = TRUE) ~ "high",
     ),
     urb_cat = urb,
     age_cat = ifelse(age <= 45, "18-45", "45+"),
@@ -522,10 +522,10 @@ for (i in 1:nv) {
 ### 3.4.2 Compare constrained model with all unconstrained models ----
 
 anchorTest_v <- mxCompare(fitAbo_v, fitScalar_v)
-anchorOut_v <- data.frame(Name=paste0("Indicator",1:10), 
-                          X2=anchorTest_v$diffLL[seq(2,20,2)],
-                          df=anchorTest_v$diffdf[seq(2,20,2)],
-                          p=anchorTest_v$p[seq(2,20,2)]) %>% 
+anchorOut_v <- data.frame(Name=paste0("Indicator",1:nv), 
+                          X2=anchorTest_v$diffLL[seq(2,(2*nv),2)],
+                          df=anchorTest_v$diffdf[seq(2,(2*nv),2)],
+                          p=anchorTest_v$p[seq(2,(2*nv),2)]) %>% 
   arrange(X2)
 
 

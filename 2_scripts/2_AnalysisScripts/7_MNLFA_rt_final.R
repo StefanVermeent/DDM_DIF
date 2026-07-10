@@ -7,7 +7,7 @@ load("1_data/3_AnalysisData/clean_data.RData")
 
 data_clean <- data_clean |> 
   mutate(
-    across(matches("(con|inc|rep|sw)$"), ~scale(.) |> as.numeric(), .names = "{.col}_l"),
+    across(matches("(con|inc|rep|sw)_c$"), ~scale(.) |> as.numeric()),
     across(matches("urb_c|edu_c|age_c|child_dep|child_thr"), ~scale(.) |> as.numeric())
   )
 
@@ -18,7 +18,7 @@ mxOption(key="Number of Threads", value=imxGetNumThreads())
 
 ## 2.1 Create data objects ----
 mxdata <- mxData(observed = data_clean, type = "raw")
-manVars <- colnames(data_clean |> select(matches("_(con|inc|sw|rep)_l$")))  
+manVars <- colnames(data_clean |> select(matches("_(con|inc|sw|rep)_c$")))  
 nv <- length(manVars)
 manVars
 
@@ -40,7 +40,7 @@ rt_grid <- miTest_Apo_rt |>
 
 matT0 <- mxMatrix(type="Full", nrow=1, ncol=nv,
                   free=TRUE,
-                  values=1,
+                  values=0,
                   name="matT0")
 
 matB1 <- mxMatrix(type="Full", nrow=1, ncol=nv,

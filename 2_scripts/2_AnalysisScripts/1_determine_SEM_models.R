@@ -32,7 +32,7 @@ rt_un_fit <- lavaan::cfa(
 rt_un_fit_sum <- lavaan::summary(rt_un_fit, fit.measures = TRUE)
 
 # Explore areas of misfit
-modificationIndices(rt_un_fit) |> as_tibble() |> arrange()
+modificationIndices(rt_un_fit) |> as_tibble() |> arrange(desc(mi))
 
 
 ## 2.2 Diversity model
@@ -150,16 +150,16 @@ v_fitstats <- v_fit_sum$fit[c('chisq', 'df', 'pvalue', 'cfi', 'rmsea', 'rmsea.ci
 model_a <- 
   '
   # Factor loadings
-  A =~ NA*fl_a1 + fl_a2 + si_a1 + si_a2 + cs_a1 + cs_a2 + gl_a1 + gl_a2 + as_a1 + as_a2
+  A =~ NA*fl_a1_c + fl_a2_c + si_a1_c + si_a2_c + cs_a1_c + cs_a2_c + gl_a1_c + gl_a2_c + as_a1_c + as_a2_c
   
   # (Co-)variances
   A ~~ 1*A
 
-  fl_a1 ~~ fl_a2
-  si_a1 ~~ si_a2
-  cs_a1 ~~ cs_a2
-  gl_a1 ~~ gl_a2
-  as_a1 ~~ as_a2
+  fl_a1_c ~~ fl_a2_c
+  si_a1_c ~~ si_a2_c
+  cs_a1_c ~~ cs_a2_c
+  gl_a1_c ~~ gl_a2_c
+  as_a1_c ~~ as_a2_c
 '
 
 a_fit <- lavaan::cfa(

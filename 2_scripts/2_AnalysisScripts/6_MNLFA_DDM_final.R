@@ -10,7 +10,7 @@ load("1_data/3_AnalysisData/clean_data.RData")
 
 data_clean <- data_clean |> 
   mutate(
-    across(matches("(v|a|t)(1|2)$"), ~scale(.) |> as.numeric(), .names = "{.col}_l"),
+    across(matches("(v|a|t)(1|2)_c$"), ~scale(.) |> as.numeric()),
     across(matches("urb_c|edu_c|age_c|child_dep|child_thr"), ~scale(.) |> as.numeric())
   )
 
@@ -18,7 +18,7 @@ data_clean <- data_clean |>
 
 ## 2.1 Create data objects ----
 mxdata <- mxData(observed = data_clean, type = "raw")
-manVars <- colnames(data_clean |> select(matches("(v)(1|2)_l"), matches("(a)(1|2)_l"),  matches("(t)(1|2)_l")))  
+manVars <- colnames(data_clean |> select(matches("(v)(1|2)_c"), matches("(a)(1|2)_c"),  matches("(t)(1|2)_c")))  
 nv <- length(manVars)
 manVars
 
@@ -69,7 +69,7 @@ joined_grid <- bind_rows(
 
 matT0 <- mxMatrix(type="Full", nrow=1, ncol=nv,
                   free=TRUE,
-                  values=1,
+                  values=0,
                   name="matT0")
 
 matB1 <- mxMatrix(type="Full", nrow=1, ncol=nv,
