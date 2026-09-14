@@ -32,3 +32,14 @@ source("2_scripts/2_AnalysisScripts/5_MNLFA_t.R")
 source("2_scripts/2_AnalysisScripts/6_MNLFA_DDM_final.R")
 source("2_scripts/2_AnalysisScripts/7_MNLFA_rt_final.R")
 
+
+# 4. Staging --------------------------------------------------------------
+
+source("2_scripts/2_AnalysisScripts/8_Staging.R")
+source("2_scripts/3_SupplementScripts/staging.R")
+
+
+# 4. Generate manuscript --------------------------------------------------
+
+quarto::quarto_render("4_manuscript/manuscript.qmd")
+quarto::quarto_render("4_manuscript/supplement.qmd")

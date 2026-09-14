@@ -30,7 +30,8 @@ pkgs <-
     "mice",
     "flextable",
     "splithalf",
-    "patchwork"
+    "patchwork",
+    "quarto"
   )
 
 

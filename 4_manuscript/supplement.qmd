@@ -1,0 +1,294 @@
+---
+bibliography: ../bibfiles/references.bib
+csl: ../bibfiles/apa.csl
+format: 
+  docx:
+    reference-doc: ../bibfiles/reference-doc-supp.docx
+output:
+  officedown::rdocx_document:
+    plots:
+      align: center
+      caption:
+        pre: 'Figure '
+        sep: '. '
+        style: Image Caption
+    tables:
+      caption:
+        pre: 'Table '
+        sep: '. '
+        style: Table Caption
+---
+
+```{r}
+#| warning: false
+#| echo: false
+library(tidyverse)
+library(flextable)
+load("../3_output/SupplementResults/section1.RData")
+load("../3_output/SupplementResults/section2.RData")
+```
+# Supplementary materials
+
+This file contains the supplementary materials for the article entitled "Unpacking differential item functioning in executive functioning performance using computational modeling".
+The supplemental materials include supporting information relating to more detailed descriptive statistics, model convergence and fit, and details on confounders.
+
+## Section 1 - Psychometric properties of cognitive tasks
+
+### 1.1 Performance distributions
+
+Figure S1 and S2 show the distributions of mean response times and mean error rate for each cognitive task.
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: FigureS1
+#| fig-width: 6
+#| fig-height: 4.5
+#| dpi: 600
+#| fig-cap: | 
+#|   **Figure S4.** Distributions of response times for all tasks.
+supp_fig_rt_hist +
+  theme_classic()
+```
+
+```{r}
+#| echo: false
+#| label: FigureS2
+#| fig-width: 6
+#| fig-height: 4.5
+#| dpi: 600
+#| fig-cap: | 
+#|   **Figure S5.** Distributions of error rates for all tasks.
+supp_fig_acc_hist +
+  theme_classic()
+```
+
+### 1.2 Condition effects
+
+Table S1 presents tests of condition effects for response times for the five cognitive tasks.
+Specifically, we tested whether incongruent/switch trials led to significantly slower average correct responses relative to congruent/repeat trials.
+The manipulation checks were based on mean log-transformed response times using paired-sample *t*-tests.
+For each task, we tested whether there was a significant difference in mean log-transformed response time between the congruent (repeat) condition and the incongruent (switch) condition.
+All tasks showed a significant difference in the expected direction, with participants on average being faster on the congruent (repeat) condition compared to the incongruent (switch) condition (all *p*s < .001).
+
+```{r}
+#| echo: false
+#| tab.id: tableS1
+#| results: markup
+man_checks |> 
+  flextable() |> 
+  add_header_row(
+    values = " ",
+    colwidths = 4
+  ) |> 
+  flextable::compose(
+    i = 1, j = 1,
+    as_paragraph(as_b("Table S1. "), "Log-transformed response time differences across conditions for each task."),
+    part = "header"
+  ) |> 
+  flextable::align(i = 2, align = "center", part = "header") |> 
+  border_remove() |> 
+  border(i = 2, border.top = fp_border_default(), part = "header") |>  
+  border(i = 2, border.bottom = fp_border_default(), part = "header") |> 
+  border(i = 5, border.bottom = fp_border_default(), part = "body") |> 
+  autofit()
+  
+```
+
+
+ 
+
+
+### 1.3 Split-half reliability
+
+For each cognitive task, we calculated split-half reliabilities using the `splithalf` package [@parsons_2021].
+We calculated split-half reliabilities for mean response times and error rates, separately for each condition (see Table S1).
+The split-half reliability of mean response times was high across all tasks and conditions.
+For error rates, the reliability estimates were generally lower, which is likely due to ceiling effects (see also Figure S5).
+
+ 
+
+```{r}
+#| echo: false
+#| tab.id: tableS2
+#| results: markup
+sh_rel_rt_table |> 
+  mutate(empty = "") |> 
+  select(task, `sh_ci_congruent/repeat`, `sh_ci_incongruent/switch`, empty, `sb_ci_congruent/repeat`, `sb_ci_incongruent/switch`) |> 
+  flextable() |> 
+  flextable::set_header_labels(values = c("Task", "Congruent/Repeat", "Incongruent/Switch", "", "Congruent/Repeat", "Incongruent/Switch")) |> 
+  add_header_row(values = c("", "Split-half reliability", "", "", "Spearman-Brown corrected", "")) |> 
+  flextable::merge_at(i = 1, j = 2:3, part = "header") |> 
+  flextable::merge_at(i = 1, j = 5:6, part = "header") |> 
+  add_header_row(
+    values = " ",
+    colwidths = 6
+  ) |> 
+  flextable::compose(
+    i = 1, j = 1,
+    as_paragraph(as_b("Table S2. "), "Split-half reliabilities of mean response times for all cognitive tasks."),
+    part = "header"
+  ) |> 
+  flextable::align(i = 2, align = "center", part = "header") |> 
+  border_remove() |> 
+  border(i = 2, border.top = fp_border_default(), part = "header") |>  
+  border(i = 2, j = c(2:3, 5:6), border.bottom = fp_border_default(), part = "header") |> 
+  border(i = 3, j = c(1:6), border.bottom = fp_border_default(), part = "header") |> 
+  border(i = 5, border.bottom = fp_border_default(), part = "body") |> 
+  autofit()
+```
+
+ {{< pagebreak >}}
+
+```{r}
+#| echo: false
+#| tab.id: tableS3
+#| results: markup
+sh_rel_acc_table |> 
+  mutate(empty = "") |> 
+  select(task, `sh_ci_congruent/repeat`, `sh_ci_incongruent/switch`, empty, `sb_ci_congruent/repeat`, `sb_ci_incongruent/switch`) |> 
+  flextable() |> 
+  flextable::set_header_labels(values = c("Task", "Congruent/Repeat", "Incongruent/Switch", "", "Congruent/Repeat", "Incongruent/Switch")) |> 
+  add_header_row(values = c("", "Split-half reliability", "", "", "Spearman-Brown corrected", "")) |> 
+  flextable::merge_at(i = 1, j = 2:3, part = "header") |> 
+  flextable::merge_at(i = 1, j = 5:6, part = "header") |> 
+  add_header_row(
+    values = " ",
+    colwidths = 6
+  ) |> 
+  flextable::compose(
+    i = 1, j = 1,
+    as_paragraph(as_b("Table S3. "), "Split-half reliabilities of error rates for all cognitive tasks."),
+    part = "header"
+  ) |> 
+  flextable::align(i = 2, align = "center", part = "header") |> 
+  border_remove() |> 
+  border(i = 2, border.top = fp_border_default(), part = "header") |>  
+  border(i = 2, j = c(2:3, 5:6), border.bottom = fp_border_default(), part = "header") |> 
+  border(i = 3, j = c(1:6), border.bottom = fp_border_default(), part = "header") |> 
+  border(i = 5, border.bottom = fp_border_default(), part = "body") |> 
+  autofit()
+```
+
+ 
+
+## Section 2 - DDM convergence and fit
+
+### 2.1 Model convergence
+
+Figures S3-S7 present the convergence of MCMC chains of the Hierarchical Drift Diffusion Models for all tasks.
+The figures should resemble a "fat, hairy caterpillar", which was the case for all tasks.
+
+ 
+
+ 
+
+```{r}
+#| echo: false
+#| label: FigureS3
+#| fig-width: 6
+#| fig-height: 3
+#| dpi: 600
+#| fig-cap: | 
+#|   **Figure S3.** Trace convergence across three chains for the Flanker Task.
+flanker_fit_trace
+```
+
+ 
+
+```{r}
+#| echo: false
+#| label: FigureS4
+#| fig-width: 6
+#| fig-height: 3
+#| dpi: 600
+#| fig-cap: | 
+#|   **Figure S4.** Trace convergence across three chains for the Simon Task.
+simon_fit_trace
+```
+
+ 
+
+```{r}
+#| echo: false
+#| label: FigureS5
+#| fig-width: 6
+#| fig-height: 3
+#| dpi: 600
+#| fig-cap: | 
+#|   **Figure S5.** Trace convergence across three chains for the Color-shape Task.
+colorshape_fit_trace
+```
+
+ 
+
+```{r}
+#| echo: false
+#| label: FigureS6
+#| fig-width: 6
+#| fig-height: 3
+#| dpi: 600
+#| fig-cap: | 
+#|   **Figure S6.** Trace convergence across three chains for the Global-local Task.
+globallocal_fit_trace
+```
+
+ 
+
+```{r}
+#| echo: false
+#| label: FigureS7
+#| fig-width: 6
+#| fig-height: 3
+#| dpi: 600
+#| fig-cap: | 
+#|   **Figure S7.** Trace convergence across three chains for the Animacy-size Task.
+animacysize_fit_trace
+```
+ 
+
+### 2.2 Model fit
+
+Table S3 presents simulation-based model fit results.
+
+{{< pagebreak >}}
+
+:::{.landscape}
+
+```{r}
+#| echo: false
+ddm_fit_table |> 
+  flextable::autofit() |> 
+  add_header_row(
+    values = " ",
+    colwidths = 7
+  ) |> 
+  flextable::compose(
+    i = 1, j = 1,
+    as_paragraph(as_b("Table S3. "), "Model fit assessment."),
+    part = "header"
+  ) |> 
+  flextable::align(i = 2, align = "center", part = "header") |> 
+  border_remove() |> 
+  border(i = 2, border.top = fp_border_default(), part = "header") |>  
+  border(i = 2, border.bottom = fp_border_default(), part = "header") |>  
+  border(i = 10, border.bottom = fp_border_default(), part = "body") |> 
+  add_footer_row(
+    values = " ",
+    colwidths = 7
+  ) |> 
+  add_footer_row(
+    values = " ",
+    colwidths = 7
+  ) |> 
+  flextable::compose(
+    i = 1, j = 1, 
+    as_paragraph(as_i("Note: "), "Simulation-based model fit assessment compared observed and predicted data using 100 simulated trials (accuracy, 25th, 50th, 75th percentile). In addition, we calculated R^ values, which should be below 1.1 to indicate adequate chain convergence."), 
+    part = "footer"
+  ) |> 
+  flextable::autofit()
+```
+
+:::
+
+# 3. References
